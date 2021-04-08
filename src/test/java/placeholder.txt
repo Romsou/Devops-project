@@ -1,0 +1,1 @@
+A file to be able to push the test folder on github, to erase afterwards
