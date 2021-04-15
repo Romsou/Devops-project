@@ -16,11 +16,9 @@ class SerialTest {
     @BeforeEach
     void setUp() {
         //TODO: Activate tests once Serie has been coded.
-        /*
-        this.doubleSerie = new Serie<Float>();
-        this.stringSerie = new Serie<String>();
-        this.integerSerie = new Serie<Integer>();
-         */
+        //this.doubleSerie = new Serie<Float>();
+        //this.stringSerie = new Serie<String>();
+        //this.integerSerie = new Serie<Integer>();
     }
 
 
@@ -36,7 +34,7 @@ class SerialTest {
     void add() {
         //TODO: Activate test once add has been coded.
         //testAddOnDoubleSerie();
-        //testAddOnDoubleSerie();
+        //testAddOnIntegerSerie();
         //testAddOnStringSerie();
     }
 
@@ -126,12 +124,12 @@ class SerialTest {
         assertNotNull(this.integerSerie);
         assertEquals(0, this.integerSerie.size());
 
-        for(int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             this.integerSerie.add(1);
             assertEquals(i + 1, this.integerSerie.size());
         }
 
-        for(int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             this.integerSerie.remove(0);
             assertEquals(5 - (i + 1), this.integerSerie.size());
         }
@@ -140,16 +138,33 @@ class SerialTest {
 
     @Test
     void print() {
+        // TODO: Find a way to redirect stdout to the inside of the program
     }
 
 
     @Test
     void set() {
+        assertNotNull(this.integerSerie);
+
+        for (int i = 1; i <= 3; i++)
+            this.integerSerie.add(i);
+
+        assertEquals(3, this.integerSerie.size());
+        this.integerSerie.set(5, 1);
+        assertEquals(3, this.integerSerie.size());
+        assertEquals(1, this.integerSerie.get(0));
+        assertEquals(5, this.integerSerie.get(1));
+        assertEquals(3, this.integerSerie.get(2));
     }
 
 
     @Test
     void get() {
+        assertNotNull(this.integerSerie);
+        assertThrows(NullPointerException.class, () -> this.integerSerie.get(0));
+
+        this.integerSerie.add(1);
+        assertEquals(1, this.integerSerie.get(1));
     }
 
 }
