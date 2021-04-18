@@ -16,7 +16,7 @@ class SerialTest {
     @BeforeEach
     void setUp() {
         //TODO: Activate tests once Serie has been coded.
-        //this.doubleSerie = new Serie<Double>();
+        this.doubleSerie = new Serie<Double>();
         this.stringSerie = new Serie<String>();
         this.integerSerie = new Serie<Integer>();
     }
@@ -24,7 +24,7 @@ class SerialTest {
 
     @AfterEach
     void tearDown() {
-        //this.doubleSerie = null;
+        this.doubleSerie = null;
         this.stringSerie = null;
         this.integerSerie = null;
     }
@@ -33,7 +33,7 @@ class SerialTest {
     @Test
     void add() {
         //TODO: Activate test once add has been coded.
-        //testAddOnDoubleSerie();
+        testAddOnDoubleSerie();
         testAddOnIntegerSerie();
         testAddOnStringSerie();
     }
@@ -73,7 +73,7 @@ class SerialTest {
     @Test
     void remove() {
         //TODO: Activate once remove has been coded
-        //testRemoveDoubleSerie();
+        testRemoveDoubleSerie();
         testRemoveIntegerSerie();
         testRemoveStringSerie();
     }
