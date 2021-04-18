@@ -45,8 +45,8 @@ class SerialTest {
             assertEquals(i + 1, this.doubleSerie.size());
         }
 
-        for (int i = 0; i < 5; i++)
-            assertEquals(this.doubleSerie.get(i), i + 0.5);
+        for (double i = 0; i < 5; i++)
+            assertEquals(this.doubleSerie.get((int) i), i / 2 + 0.5);
     }
 
     private void testAddOnStringSerie() {
