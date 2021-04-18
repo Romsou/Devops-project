@@ -169,7 +169,7 @@ class SerialTest {
         assertThrows(NullPointerException.class, () -> this.integerSerie.get(0));
 
         this.integerSerie.add(1);
-        assertEquals(1, this.integerSerie.get(1));
+        assertEquals(1, this.integerSerie.get(0));
         */
     }
 
