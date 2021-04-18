@@ -3,52 +3,51 @@ package dataframe;
 public interface Serial<T> {
 
     /**
-     * A methode to add a element to the serie at last position
+     * Adds an element to the serie at the last position
      *
      * @param e the element to add
-     * @return true if the addition is effective
+     * @return true if the addition succeeded
      */
     boolean add(T e);
 
     /**
-     * Remove the element at indicated position
+     * Removes the element at the given index
      *
-     * @param index the index of element to be removed
-     * @return true if the removal is effective
+     * @param index the index of the element to be removed
+     * @return true if the removal succeeded
      */
     boolean remove(int index);
 
     /**
-     * Get the size of the serie
+     * Gets the size of the serie
      *
      * @return the number of elements in the serie
      */
     int size();
 
     /**
-     * Create a String to represent the serie
+     * Creates a String to represent the serie
      *
      * @return the String who represents the serie
      */
     String toString();
 
     /**
-     * Print on standard output a representation of
-     * the serie
+     * Prints on standard output a representation of the serie
      */
     void print();
 
     /**
-     * Modify one element of the serie
+     * Modify the element of the serie at the given index
      *
      * @param e     the new element
-     * @param index the index position of new element
+     * @param index the position of the new element
      * @return true if the modification is successful
      */
     boolean set(T e, int index);
 
     /**
-     * Get the element at the specified index
+     * Gets the element at the specified index
      *
      * @param index a valid position
      * @return the element at the specified index
