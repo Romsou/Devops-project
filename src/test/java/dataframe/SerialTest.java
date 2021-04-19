@@ -83,12 +83,12 @@ class SerialTest {
         this.doubleSerie.add(1.1);
         this.doubleSerie.add(1.2);
 
-        assertThrows(NullPointerException.class, () -> this.doubleSerie.remove(2));
+        assertThrows(IndexOutOfBoundsException.class, () -> this.doubleSerie.remove(2));
         this.doubleSerie.remove(0);
         assertEquals(1, this.doubleSerie.size());
         assertEquals(1.2, this.doubleSerie.get(0));
 
-        assertThrows(NullPointerException.class, () -> this.doubleSerie.remove(1));
+        assertThrows(IndexOutOfBoundsException.class, () -> this.doubleSerie.remove(1));
     }
 
     private void testRemoveIntegerSerie() {
@@ -96,12 +96,12 @@ class SerialTest {
         this.integerSerie.add(1);
         this.integerSerie.add(2);
 
-        assertThrows(NullPointerException.class, () -> this.integerSerie.remove(2));
+        assertThrows(IndexOutOfBoundsException.class, () -> this.integerSerie.remove(2));
         this.integerSerie.remove(0);
         assertEquals(1, this.integerSerie.size());
         assertEquals(2, this.integerSerie.get(0));
 
-        assertThrows(NullPointerException.class, () -> this.integerSerie.remove(1));
+        assertThrows(IndexOutOfBoundsException.class, () -> this.integerSerie.remove(1));
     }
 
     private void testRemoveStringSerie() {
@@ -109,13 +109,13 @@ class SerialTest {
         this.stringSerie.add("a");
         this.stringSerie.add("b");
 
-        assertThrows(NullPointerException.class, () -> this.stringSerie.remove(2));
+        assertThrows(IndexOutOfBoundsException.class, () -> this.stringSerie.remove(2));
 
         this.stringSerie.remove(0);
         assertEquals(1, this.stringSerie.size());
         assertEquals("b", this.stringSerie.get(0));
 
-        assertThrows(NullPointerException.class, () -> this.stringSerie.remove(1));
+        assertThrows(IndexOutOfBoundsException.class, () -> this.stringSerie.remove(1));
     }
 
 
@@ -166,7 +166,7 @@ class SerialTest {
     void get() {
         /* TODO: Activate once get is coded.
         assertNotNull(this.integerSerie);
-        assertThrows(NullPointerException.class, () -> this.integerSerie.get(0));
+        assertThrows(IndexOutOfBoundException.class, () -> this.integerSerie.get(0));
 
         this.integerSerie.add(1);
         assertEquals(1, this.integerSerie.get(0));
