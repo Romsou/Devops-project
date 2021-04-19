@@ -40,9 +40,9 @@ class SerialTest {
 
     private void testAddOnDoubleSerie() {
         assertNotNull(this.doubleSerie);
-        for (double i = 0.5; i < 5; i += 0.5) {
+        for (double i = 0.5, j = 1; i < 5; i += 0.5, j++) {
             this.doubleSerie.add(i);
-            assertEquals(i + 1, this.doubleSerie.size());
+            assertEquals(j, this.doubleSerie.size());
         }
 
         for (double i = 0; i < 5; i++)
