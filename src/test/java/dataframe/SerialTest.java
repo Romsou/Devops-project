@@ -154,13 +154,13 @@ class SerialTest {
 
         // Checks that set does not modify the size
         assertEquals(3, this.integerSerie.size());
-        this.integerSerie.set(5, 1);
+        this.integerSerie.set(2, 1);
         assertEquals(3, this.integerSerie.size());
 
 
         assertEquals(1, this.integerSerie.get(0));
         assertEquals(2, this.integerSerie.get(1));
-        assertEquals(3, this.integerSerie.get(2));
+        assertEquals(1, this.integerSerie.get(2));
 
         assertThrows(IndexOutOfBoundsException.class, () -> this.integerSerie.set(5, 1));
     }
