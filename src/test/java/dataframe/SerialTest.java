@@ -166,7 +166,7 @@ class SerialTest {
     void get() {
         // TODO: Activate once get is coded.
         assertNotNull(this.integerSerie);
-        assertThrows(IndexOutOfBoundException.class, () -> this.integerSerie.get(0));
+        assertThrows(IndexOutOfBoundsException.class, () -> this.integerSerie.get(0));
 
         this.integerSerie.add(1);
         assertEquals(1, this.integerSerie.get(0));
