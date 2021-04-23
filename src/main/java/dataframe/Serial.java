@@ -1,5 +1,8 @@
 package dataframe;
 
+import CustomExceptions.EmptySerieException;
+import CustomExceptions.UnsupportedTypeException;
+
 public interface Serial<T> {
 
     /**
@@ -39,10 +42,15 @@ public interface Serial<T> {
      */
     int size();
 
+    T min() throws Exception;
+
+    T max() throws UnsupportedTypeException, EmptySerieException;
+
     /**
      * Computes the sum of all the elements contained within this serie.
-     *
+     * <p>
      * If this serie contains no element, it returns 0.0. Else
+     *
      * @return
      */
     T sum();
