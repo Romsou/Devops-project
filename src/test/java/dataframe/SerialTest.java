@@ -16,9 +16,9 @@ class SerialTest {
     @BeforeEach
     void setUp() {
         //TODO: Activate tests once Serie has been coded.
-        this.doubleSerie = new Serie<Double>();
-        this.stringSerie = new Serie<String>();
-        this.integerSerie = new Serie<Integer>();
+        this.doubleSerie = new Serie<>();
+        this.stringSerie = new Serie<>();
+        this.integerSerie = new Serie<>();
     }
 
 
@@ -152,13 +152,17 @@ class SerialTest {
         for (int i = 1; i <= 3; i++)
             this.integerSerie.add(i);
 
+        // Checks that set does not modify the size
         assertEquals(3, this.integerSerie.size());
         this.integerSerie.set(5, 1);
         assertEquals(3, this.integerSerie.size());
+
+
         assertEquals(1, this.integerSerie.get(0));
-        assertEquals(5, this.integerSerie.get(1));
+        assertEquals(2, this.integerSerie.get(1));
         assertEquals(3, this.integerSerie.get(2));
-        
+
+        assertThrows(IndexOutOfBoundsException.class, () -> this.integerSerie.set(5, 1));
     }
 
 
