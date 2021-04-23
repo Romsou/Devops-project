@@ -2,16 +2,16 @@ package dataframe;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.lang.IllegalArgumentException;
-import java.lang.Class;
 
 public class Serie<T> implements Serial<T> {
 
-    private List<T> elements;
+    protected List<T> elements;
+    protected  SupportedTypes type;
 
 
-    public Serie() {
+    public Serie(SupportedTypes type) {
         elements = new ArrayList<>();
+        this.type = type;
     }
 
 
@@ -39,6 +39,47 @@ public class Serie<T> implements Serial<T> {
         return elements.size();
     }
 
+    @Override
+    public T sum() throws UnsupportedOperationException{
+        switch(type) {
+            case DOUBLE:
+                return (T) sumDouble();
+            case INTEGER:
+                return (T) sumInteger();
+            case STRING:
+                return sumString();
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    private Object sumDouble() {
+        double sum = 0;
+
+        if(elements.size() == 0)
+            return 0.0;
+
+        for(T elt: elements)
+            sum += (Double) elt;
+
+        return sum;
+    }
+
+    private Object sumInteger() {
+        double sum = 0;
+
+        if(elements.size() == 0)
+            return 0;
+
+        for(T elt: elements)
+            sum += (Integer) elt;
+
+        return sum;
+    }
+
+    private T sumString() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Can't sum strings");
+    }
 
     public void print() {
         for (T elt : elements)
