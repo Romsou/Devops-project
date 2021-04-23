@@ -6,17 +6,15 @@ public interface Serial<T> {
      * Adds an element to the serie at the last position
      *
      * @param e the element to add
-     * @return true if the addition succeeded
      */
-    boolean add(T e);
+    void add(T e);
 
     /**
      * Removes the element at the given index
      *
      * @param index the index of the element to be removed
-     * @return true if the removal succeeded
      */
-    boolean remove(int index);
+    void remove(int index);
 
     /**
      * Gets the size of the serie
@@ -42,9 +40,8 @@ public interface Serial<T> {
      *
      * @param e     the new element
      * @param index the position of the new element
-     * @return true if the modification is successful
      */
-    boolean set(T e, int index);
+    void set(int index, T e);
 
     /**
      * Gets the element at the specified index
@@ -53,6 +50,5 @@ public interface Serial<T> {
      * @return the element at the specified index
      */
     T get(int index);
-
 
 }
