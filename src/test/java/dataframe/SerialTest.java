@@ -16,9 +16,9 @@ class SerialTest {
     @BeforeEach
     void setUp() {
         //TODO: Activate tests once Serie has been coded.
-        //this.doubleSerie = new Serie<Double>();
-        //this.stringSerie = new Serie<String>();
-        //this.integerSerie = new Serie<Integer>();
+        this.doubleSerie = new Serie<Double>();
+        this.stringSerie = new Serie<String>();
+        this.integerSerie = new Serie<Integer>();
     }
 
 
@@ -33,9 +33,9 @@ class SerialTest {
     @Test
     void add() {
         //TODO: Activate test once add has been coded.
-        //testAddOnDoubleSerie();
-        //testAddOnIntegerSerie();
-        //testAddOnStringSerie();
+        testAddOnDoubleSerie();
+        testAddOnIntegerSerie();
+        testAddOnStringSerie();
     }
 
     private void testAddOnDoubleSerie() {
@@ -73,9 +73,9 @@ class SerialTest {
     @Test
     void remove() {
         //TODO: Activate once remove has been coded
-        //testRemoveDoubleSerie();
-        //testRemoveIntegerSerie();
-        //testRemoveStringSerie();
+        testRemoveDoubleSerie();
+        testRemoveIntegerSerie();
+        testRemoveStringSerie();
     }
 
     private void testRemoveDoubleSerie() {
@@ -121,7 +121,7 @@ class SerialTest {
 
     @Test
     void size() {
-        /* TODO: Activate once size is coded.
+        // TODO: Activate once size is coded.
         assertNotNull(this.integerSerie);
         assertEquals(0, this.integerSerie.size());
 
@@ -134,7 +134,7 @@ class SerialTest {
             this.integerSerie.remove(0);
             assertEquals(5 - (i + 1), this.integerSerie.size());
         }
-        */
+        
     }
 
 
@@ -146,7 +146,7 @@ class SerialTest {
 
     @Test
     void set() {
-        /* TODO: Activate once set is coded.
+        // TODO: Activate once set is coded.
         assertNotNull(this.integerSerie);
 
         for (int i = 1; i <= 3; i++)
@@ -158,19 +158,19 @@ class SerialTest {
         assertEquals(1, this.integerSerie.get(0));
         assertEquals(5, this.integerSerie.get(1));
         assertEquals(3, this.integerSerie.get(2));
-        */
+        
     }
 
 
     @Test
     void get() {
-        /* TODO: Activate once get is coded.
+        // TODO: Activate once get is coded.
         assertNotNull(this.integerSerie);
         assertThrows(IndexOutOfBoundException.class, () -> this.integerSerie.get(0));
 
         this.integerSerie.add(1);
         assertEquals(1, this.integerSerie.get(0));
-        */
+
     }
 
 }
