@@ -13,6 +13,7 @@ public class Serie<T> implements Serial<T> {
         elements = new ArrayList<>();
     }
 
+
     public void add(T e) {
         elements.add(e);
     }
@@ -22,25 +23,29 @@ public class Serie<T> implements Serial<T> {
         elements.remove(index);
     }
 
-    public int size() {
-        return elements.size();
+
+    public T get(int index) {
+        return elements.get(index);
     }
 
-    public String toString() {
-        return "" + elements;
-    }
-
-    public void print() {
-        System.out.println(this);
-    }
 
     public void set(int index, T e) {
         elements.set(index, e);
     }
 
 
-    public T get(int index) {
-        return elements.get(index);
+    public int size() {
+        return elements.size();
     }
+
+    public void print() {
+        for (T elt : elements)
+            System.out.println(elt);
+    }
+
+    public String toString() {
+        return "" + elements;
+    }
+
 
 }
