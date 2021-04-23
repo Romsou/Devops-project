@@ -16,9 +16,9 @@ class SerialTest {
     @BeforeEach
     void setUp() {
         //TODO: Activate tests once Serie has been coded.
-        this.doubleSerie = new Serie<>();
-        this.stringSerie = new Serie<>();
-        this.integerSerie = new Serie<>();
+        this.doubleSerie = new Serie<>(SupportedTypes.DOUBLE);
+        this.stringSerie = new Serie<>(SupportedTypes.STRING);
+        this.integerSerie = new Serie<>(SupportedTypes.INTEGER);
     }
 
 
