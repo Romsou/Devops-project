@@ -17,23 +17,12 @@ public interface Serial<T> {
     void remove(int index);
 
     /**
-     * Gets the size of the serie
+     * Gets the element at the specified index
      *
-     * @return the number of elements in the serie
+     * @param index a valid position
+     * @return the element at the specified index
      */
-    int size();
-
-    /**
-     * Creates a String to represent the serie
-     *
-     * @return the String who represents the serie
-     */
-    String toString();
-
-    /**
-     * Prints on standard output a representation of the serie
-     */
-    void print();
+    T get(int index);
 
     /**
      * Modify the element of the serie at the given index
@@ -44,11 +33,22 @@ public interface Serial<T> {
     void set(int index, T e);
 
     /**
-     * Gets the element at the specified index
+     * Gets the size of the serie
      *
-     * @param index a valid position
-     * @return the element at the specified index
+     * @return the number of elements in the serie
      */
-    T get(int index);
+    int size();
+
+    /**
+     * Prints on standard output a representation of the serie
+     */
+    void print();
+
+    /**
+     * Creates a String to represent the serie
+     *
+     * @return the String who represents the serie
+     */
+    String toString();
 
 }

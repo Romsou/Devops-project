@@ -9,6 +9,7 @@ public class Serie<T> implements Serial<T> {
 
     private List<T> elements;
 
+
     public Serie() {
         elements = new ArrayList<>();
     }
@@ -38,14 +39,15 @@ public class Serie<T> implements Serial<T> {
         return elements.size();
     }
 
+
     public void print() {
         for (T elt : elements)
             System.out.println(elt);
     }
 
+
     public String toString() {
         return "" + elements;
     }
-
 
 }
