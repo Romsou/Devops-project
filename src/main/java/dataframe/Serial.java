@@ -40,6 +40,14 @@ public interface Serial<T> {
     int size();
 
     /**
+     * Computes the sum of all the elements contained within this serie.
+     *
+     * If this serie contains no element, it returns 0.0. Else
+     * @return
+     */
+    T sum();
+
+    /**
      * Prints on standard output a representation of the serie
      */
     void print();
