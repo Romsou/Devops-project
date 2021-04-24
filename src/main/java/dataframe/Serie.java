@@ -156,7 +156,7 @@ public class Serie<T> implements Serial<T> {
     }
 
     private Object sumInteger() {
-        double sum = 0;
+        Integer sum = 0;
 
         if (elements.size() == 0)
             return 0;
