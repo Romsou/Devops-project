@@ -16,9 +16,9 @@ class SerialTest {
     @BeforeEach
     void setUp() {
         //TODO: Activate tests once Serie has been coded.
-        //this.doubleSerie = new Serie<Double>();
-        //this.stringSerie = new Serie<String>();
-        //this.integerSerie = new Serie<Integer>();
+        this.doubleSerie = new Serie<>(SupportedTypes.DOUBLE);
+        this.stringSerie = new Serie<>(SupportedTypes.STRING);
+        this.integerSerie = new Serie<>(SupportedTypes.INTEGER);
     }
 
 
@@ -33,16 +33,16 @@ class SerialTest {
     @Test
     void add() {
         //TODO: Activate test once add has been coded.
-        //testAddOnDoubleSerie();
-        //testAddOnIntegerSerie();
-        //testAddOnStringSerie();
+        testAddOnDoubleSerie();
+        testAddOnIntegerSerie();
+        testAddOnStringSerie();
     }
 
     private void testAddOnDoubleSerie() {
         assertNotNull(this.doubleSerie);
-        for (double i = 0.5; i < 5; i += 0.5) {
+        for (double i = 0.5, j = 1; i < 5; i += 0.5, j++) {
             this.doubleSerie.add(i);
-            assertEquals(i + 1, this.doubleSerie.size());
+            assertEquals(j, this.doubleSerie.size());
         }
 
         for (double i = 0; i < 5; i++)
@@ -73,9 +73,9 @@ class SerialTest {
     @Test
     void remove() {
         //TODO: Activate once remove has been coded
-        //testRemoveDoubleSerie();
-        //testRemoveIntegerSerie();
-        //testRemoveStringSerie();
+        testRemoveDoubleSerie();
+        testRemoveIntegerSerie();
+        testRemoveStringSerie();
     }
 
     private void testRemoveDoubleSerie() {
@@ -83,12 +83,12 @@ class SerialTest {
         this.doubleSerie.add(1.1);
         this.doubleSerie.add(1.2);
 
-        assertThrows(NullPointerException.class, () -> this.doubleSerie.remove(2));
+        assertThrows(IndexOutOfBoundsException.class, () -> this.doubleSerie.remove(2));
         this.doubleSerie.remove(0);
         assertEquals(1, this.doubleSerie.size());
         assertEquals(1.2, this.doubleSerie.get(0));
 
-        assertThrows(NullPointerException.class, () -> this.doubleSerie.remove(1));
+        assertThrows(IndexOutOfBoundsException.class, () -> this.doubleSerie.remove(1));
     }
 
     private void testRemoveIntegerSerie() {
@@ -96,12 +96,12 @@ class SerialTest {
         this.integerSerie.add(1);
         this.integerSerie.add(2);
 
-        assertThrows(NullPointerException.class, () -> this.integerSerie.remove(2));
+        assertThrows(IndexOutOfBoundsException.class, () -> this.integerSerie.remove(2));
         this.integerSerie.remove(0);
         assertEquals(1, this.integerSerie.size());
         assertEquals(2, this.integerSerie.get(0));
 
-        assertThrows(NullPointerException.class, () -> this.integerSerie.remove(1));
+        assertThrows(IndexOutOfBoundsException.class, () -> this.integerSerie.remove(1));
     }
 
     private void testRemoveStringSerie() {
@@ -109,19 +109,19 @@ class SerialTest {
         this.stringSerie.add("a");
         this.stringSerie.add("b");
 
-        assertThrows(NullPointerException.class, () -> this.stringSerie.remove(2));
+        assertThrows(IndexOutOfBoundsException.class, () -> this.stringSerie.remove(2));
 
         this.stringSerie.remove(0);
         assertEquals(1, this.stringSerie.size());
         assertEquals("b", this.stringSerie.get(0));
 
-        assertThrows(NullPointerException.class, () -> this.stringSerie.remove(1));
+        assertThrows(IndexOutOfBoundsException.class, () -> this.stringSerie.remove(1));
     }
 
 
     @Test
     void size() {
-        /* TODO: Activate once size is coded.
+        // TODO: Activate once size is coded.
         assertNotNull(this.integerSerie);
         assertEquals(0, this.integerSerie.size());
 
@@ -134,7 +134,7 @@ class SerialTest {
             this.integerSerie.remove(0);
             assertEquals(5 - (i + 1), this.integerSerie.size());
         }
-        */
+        
     }
 
 
@@ -146,31 +146,35 @@ class SerialTest {
 
     @Test
     void set() {
-        /* TODO: Activate once set is coded.
+        // TODO: Activate once set is coded.
         assertNotNull(this.integerSerie);
 
         for (int i = 1; i <= 3; i++)
             this.integerSerie.add(i);
 
+        // Checks that set does not modify the size
         assertEquals(3, this.integerSerie.size());
-        this.integerSerie.set(5, 1);
+        this.integerSerie.set(2, 1);
         assertEquals(3, this.integerSerie.size());
+
+
         assertEquals(1, this.integerSerie.get(0));
-        assertEquals(5, this.integerSerie.get(1));
-        assertEquals(3, this.integerSerie.get(2));
-        */
+        assertEquals(2, this.integerSerie.get(1));
+        assertEquals(1, this.integerSerie.get(2));
+
+        assertThrows(IndexOutOfBoundsException.class, () -> this.integerSerie.set(5, 1));
     }
 
 
     @Test
     void get() {
-        /* TODO: Activate once get is coded.
+        // TODO: Activate once get is coded.
         assertNotNull(this.integerSerie);
-        assertThrows(NullPointerException.class, () -> this.integerSerie.get(0));
+        assertThrows(IndexOutOfBoundsException.class, () -> this.integerSerie.get(0));
 
         this.integerSerie.add(1);
         assertEquals(1, this.integerSerie.get(0));
-        */
+
     }
 
 }
