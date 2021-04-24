@@ -1,12 +1,15 @@
 package dataframe;
 
-import java.util.List;
+import CustomExceptions.EmptySerieException;
+import CustomExceptions.UnsupportedTypeException;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Serie<T> implements Serial<T> {
 
     protected List<T> elements;
-    protected  SupportedTypes type;
+    protected SupportedTypes type;
 
 
     public Serie(SupportedTypes type) {
@@ -39,9 +42,96 @@ public class Serie<T> implements Serial<T> {
         return elements.size();
     }
 
+    public T min() throws UnsupportedTypeException, EmptySerieException {
+        switch (type) {
+            case DOUBLE:
+                return (T) minDouble();
+            case INTEGER:
+                return (T) minInteger();
+            case STRING:
+                return minString();
+            default:
+                throw new UnsupportedTypeException();
+        }
+    }
+
+    private Object minDouble() throws EmptySerieException {
+        if (elements.size() == 0)
+            throw new EmptySerieException();
+
+        double min = (double) elements.get(0);
+        for (int i = 1; i < elements.size(); i++) {
+            double current_element = (double) elements.get(i);
+            min = Math.min(min, current_element);
+        }
+
+        return min;
+    }
+
+    private Object minInteger() throws EmptySerieException {
+        if (elements.size() == 0)
+            throw new EmptySerieException();
+
+        int min = (int) elements.get(0);
+        for (int i = 1; i < elements.size(); i++) {
+            int current_element = (int) elements.get(i);
+            min = Math.min(min, current_element);
+        }
+
+        return min;
+    }
+
+    private T minString() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Can't get the minimum of a string");
+    }
+
+    public T max() throws UnsupportedTypeException, EmptySerieException {
+        switch (type) {
+            case DOUBLE:
+                return (T) maxDouble();
+            case INTEGER:
+                return (T) maxInteger();
+            case STRING:
+                return maxString();
+            default:
+                throw new UnsupportedTypeException();
+        }
+    }
+
+
+    private Object maxDouble() throws EmptySerieException {
+        if (elements.size() == 0)
+            throw new EmptySerieException();
+
+        double max = (double) elements.get(0);
+        for (int i = 1; i < elements.size(); i++) {
+            double current_element = (double) elements.get(i);
+            max = Math.max(max, current_element);
+        }
+
+        return max;
+    }
+
+    private Object maxInteger() throws EmptySerieException {
+        if (elements.size() == 0)
+            throw new EmptySerieException();
+
+        int max = (int) elements.get(0);
+        for (int i = 1; i < elements.size(); i++) {
+            int current_element = (int) elements.get(i);
+            max = Math.max(max, current_element);
+        }
+
+        return max;
+    }
+
+    private T maxString() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Can't get the maximum of a string");
+    }
+
     @Override
-    public T sum() throws UnsupportedOperationException{
-        switch(type) {
+    public T sum() throws UnsupportedOperationException {
+        switch (type) {
             case DOUBLE:
                 return (T) sumDouble();
             case INTEGER:
@@ -49,17 +139,17 @@ public class Serie<T> implements Serial<T> {
             case STRING:
                 return sumString();
             default:
-                throw new IllegalArgumentException();
+                throw new UnsupportedOperationException();
         }
     }
 
     private Object sumDouble() {
         double sum = 0;
 
-        if(elements.size() == 0)
+        if (elements.size() == 0)
             return 0.0;
 
-        for(T elt: elements)
+        for (T elt : elements)
             sum += (Double) elt;
 
         return sum;
@@ -68,10 +158,10 @@ public class Serie<T> implements Serial<T> {
     private Object sumInteger() {
         double sum = 0;
 
-        if(elements.size() == 0)
+        if (elements.size() == 0)
             return 0;
 
-        for(T elt: elements)
+        for (T elt : elements)
             sum += (Integer) elt;
 
         return sum;
