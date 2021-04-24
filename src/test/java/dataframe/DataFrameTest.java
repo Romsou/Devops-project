@@ -1,5 +1,6 @@
 package dataframe;
 
+import CustomExceptions.ColumnSizeMissmatch;
 import CustomExceptions.EmptyArrayException;
 import CustomExceptions.EmptySerieException;
 import CustomExceptions.UnsupportedTypeException;
@@ -31,7 +32,6 @@ class DataFrameTest {
         this.stringSerie = new ArrayList<Object>(Collections.nCopies(10,"a"));
         this.integerSerie = new ArrayList<Object>(Collections.nCopies(10,1));
         this.booleanSerie = new ArrayList<Object>(Collections.nCopies(10, false));
-
     }
 
 
@@ -43,7 +43,7 @@ class DataFrameTest {
     }
 
     @Test
-    void create() throws UnsupportedTypeException, EmptyArrayException, FileNotFoundException {
+    void create() throws UnsupportedTypeException, EmptyArrayException, FileNotFoundException, ColumnSizeMissmatch {
         DataFrame frame = new DataFrame(stringSerie, integerSerie, doubleSerie);
         assertEquals(3, frame.getColumnSize());
         assertEquals(10, frame.getLineSize());
@@ -67,10 +67,32 @@ class DataFrameTest {
             assertEquals(0, frame.getColumnSize());
             assertEquals(10, frame.getLineSize());
         });
+
+
+        Assertions.assertThrows(ColumnSizeMissmatch.class, () -> {
+            doubleSerie.add(doubleSerie.size(),0.2);
+            DataFrame frame = new DataFrame(integerSerie, doubleSerie);
+            assertEquals(0, frame.getColumnSize());
+            assertEquals(10, frame.getLineSize());
+        });
+
+        Assertions.assertThrows(ColumnSizeMissmatch.class, () -> {
+            doubleSerie.add(doubleSerie.size(),0.2);
+            DataFrame frame = new DataFrame(integerSerie);
+            frame.addColumn(doubleSerie);
+            assertEquals(0, frame.getColumnSize());
+            assertEquals(10, frame.getLineSize());
+        });
+
+        Assertions.assertThrows(ColumnSizeMissmatch.class, () -> {
+            File f = new File("src/resources/addressesWrong.csv");
+            DataFrame frameCSV = new DataFrame(f);
+        });
+
     }
 
     @Test
-    void add() throws UnsupportedTypeException, EmptyArrayException {
+    void add() throws UnsupportedTypeException, EmptyArrayException, ColumnSizeMissmatch {
         DataFrame frame = new DataFrame(stringSerie);
         assertEquals(1, frame.getColumnSize());
         assertEquals(10, frame.getLineSize());
@@ -80,14 +102,14 @@ class DataFrameTest {
         assertEquals(10, frame.getLineSize());
 
         assertEquals("a", frame.getColumn(0).get(0));
-        frame.addColumn(0, doubleSerie);
+        frame.addColumn(doubleSerie);
         assertEquals(3, frame.getColumnSize());
         assertEquals(10, frame.getLineSize());
-        assertEquals(1.1, frame.getColumn(0).get(0));
+        assertEquals(1.1, frame.getColumn(2).get(0));
     }
 
     @Test
-    void remove() throws UnsupportedTypeException, EmptyArrayException {
+    void remove() throws UnsupportedTypeException, EmptyArrayException, ColumnSizeMissmatch {
         DataFrame frame = new DataFrame(doubleSerie);
         assertEquals(1, frame.getColumnSize());
         assertEquals(10, frame.getLineSize());
@@ -98,8 +120,8 @@ class DataFrameTest {
     }
 
     @Test
-    void max() throws UnsupportedTypeException, EmptyArrayException, EmptySerieException {
-        DataFrame frame = new DataFrame(integerSerie, doubleSerie, stringSerie);
+    void max() throws UnsupportedTypeException, EmptyArrayException, EmptySerieException, ColumnSizeMissmatch {
+        DataFrame frame = new DataFrame(integerSerie);
         assertEquals(1, frame.max(0));
 
         integerSerie.add(2);
@@ -107,7 +129,9 @@ class DataFrameTest {
         frame.addColumn(0, integerSerie);
         assertEquals(2, frame.max(0));
 
-        assertEquals(1.1, frame.max(1));
+        doubleSerie.add(1.1);
+        frame.addColumn(0, doubleSerie);
+        assertEquals(1.1, frame.max(0));
     }
 
     @Test
@@ -119,15 +143,18 @@ class DataFrameTest {
     }
 
     @Test
-    void min() throws UnsupportedTypeException, EmptyArrayException, EmptySerieException {
-        DataFrame frame = new DataFrame(integerSerie, doubleSerie);
+    void min() throws UnsupportedTypeException, EmptyArrayException, EmptySerieException, ColumnSizeMissmatch {
+        DataFrame frame = new DataFrame(integerSerie);
         assertEquals(1, frame.min(0));
-        assertEquals(1.1, frame.min(1));
 
         integerSerie.add(0);
         frame.removeColumn(0);
         frame.addColumn(0, integerSerie);
         assertEquals(0, frame.min(0));
+
+        doubleSerie.add(1.1);
+        frame.addColumn(0, doubleSerie);
+        assertEquals(1.1, frame.min(0));
     }
 
     @Test
@@ -139,7 +166,7 @@ class DataFrameTest {
     }
 
     @Test
-    void sum() throws UnsupportedTypeException, EmptyArrayException {
+    void sum() throws UnsupportedTypeException, EmptyArrayException, ColumnSizeMissmatch {
         DataFrame frame = new DataFrame(integerSerie, doubleSerie);
         assertEquals(10, frame.sum(0));
         assertEquals(11.0, (double)frame.sum(1), 1e-10);
@@ -154,7 +181,9 @@ class DataFrameTest {
     }
 
     @Test
-    void print() throws UnsupportedTypeException, EmptyArrayException, FileNotFoundException, URISyntaxException {
+    void print() throws UnsupportedTypeException, EmptyArrayException, FileNotFoundException, URISyntaxException, ColumnSizeMissmatch {
+        // TODO: Find a way to redirect stdout to the inside of the program
+
         DataFrame frame = new DataFrame(stringSerie, integerSerie, doubleSerie);
         System.out.println(frame.toString());
 

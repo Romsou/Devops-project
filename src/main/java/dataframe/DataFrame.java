@@ -1,5 +1,6 @@
 package dataframe;
 
+import CustomExceptions.ColumnSizeMissmatch;
 import CustomExceptions.EmptyArrayException;
 import CustomExceptions.EmptySerieException;
 import CustomExceptions.UnsupportedTypeException;
@@ -9,14 +10,25 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class DataFrame {
 
     private ArrayList<Serie> frame;
+    private int nbLine;
 
-    public DataFrame(File csv) throws FileNotFoundException {
+    /**
+     * Create a DataFrame from a CSV file. Note that we not yet handle CSV File with escape
+     * character " (quotation mark), and then we not handle CSV file which contain , (comma) in cells.
+     *
+     * @param csv CSV file to read.
+     * @throws FileNotFoundException If file doesn't exist with specify path
+     * @throws ColumnSizeMissmatch if CSV file contains different column length
+     */
+    public DataFrame(File csv) throws FileNotFoundException, ColumnSizeMissmatch {
         frame = new ArrayList<Serie>();
+        nbLine = 0;
 
         FileReader fileR = new FileReader(csv);
         Scanner in = new Scanner(fileR);
@@ -24,6 +36,7 @@ public class DataFrame {
         //Guess type from first line
         String line = in.nextLine();
         String[] lineSplit = line.split(",");
+        int elementPerLine = lineSplit.length;
         int i = 0;
         for(String s : lineSplit) {
             Object inferred = TypeInferer.inferType(s);
@@ -46,7 +59,11 @@ public class DataFrame {
             }
             line = in.nextLine();
             lineSplit = line.split(",");
+            if (lineSplit.length != elementPerLine) {
+                throw new ColumnSizeMissmatch();
+            }
         } while(in.hasNext());
+         nbLine = i-1;
 
     }
 
@@ -56,72 +73,115 @@ public class DataFrame {
      * @param arrays columns to add in DataFrame.
      * @throws UnsupportedTypeException if array elements type is not Integer, Double or String
      */
-    public DataFrame(ArrayList<Object>... arrays) throws UnsupportedTypeException, EmptyArrayException {
+    public DataFrame(ArrayList<Object>... arrays) throws UnsupportedTypeException, EmptyArrayException, ColumnSizeMissmatch {
         frame = new ArrayList<Serie>();
+        nbLine = 0;
 
         for(ArrayList<Object> array : arrays)
             addColumn(frame.size(), array);
     }
 
     /**
-     * Add a given array at given index to DataFrame.
+     * Add a given array at given index into DataFrame.
+     *
      * @param columnIndex Index where array should be add.
      * @param array Array of Objects
      * @throws UnsupportedTypeException if array elements type is not Integer, Double or String
      */
-    public void addColumn(int columnIndex, ArrayList<Object> array) throws UnsupportedTypeException, EmptyArrayException {
-        if (array.size() > 0) {
+    public void addColumn(int columnIndex, ArrayList<Object> array) throws UnsupportedTypeException, EmptyArrayException, ColumnSizeMissmatch {
+        try {
+            frame.remove(columnIndex);
+        } catch (IndexOutOfBoundsException e) {
+
+        }
+        if (array.size() > 0 && nbLine == array.size() || array.size() > 0 && nbLine == 0) {
+            if (nbLine == 0)
+                nbLine = array.size();
+
             Object objType = array.get(0);
             Serie column = null;
-            if (objType instanceof String) {
+            if (objType instanceof String)
                 column = new Serie<>(SupportedTypes.STRING);
-            } else if (objType instanceof Integer) {
+            else if (objType instanceof Integer)
                 column = new Serie<>(SupportedTypes.INTEGER);
-            } else if (objType instanceof Double) {
+            else if (objType instanceof Double)
                 column = new Serie<>(SupportedTypes.DOUBLE);
-            } else {
+            else
                 throw new UnsupportedTypeException();
-            }
 
             //Fill Serie
-            for (Object o : array) {
+            for (Object o : array)
                 column.add(o);
-            }
+
             frame.add(columnIndex, column);
-        } else {
-            throw new EmptyArrayException();
         }
+        else if (array.size() == 0)
+            throw new EmptyArrayException();
+        else  if (nbLine != array.size())
+            throw new ColumnSizeMissmatch();
     }
 
-    public void removeColumn(int column) {
+    /**
+     * Add column at the end of DataFrame
+     *
+     * @param array Array to add in DataFrame
+     * @throws UnsupportedTypeException
+     * @throws EmptyArrayException
+     * @throws ColumnSizeMissmatch
+     */
+    public void addColumn(ArrayList<Object> array) throws UnsupportedTypeException, EmptyArrayException, ColumnSizeMissmatch {
+        addColumn(frame.size(), array);
+    }
+
+    /**
+     * Removes column specify by it index
+     *
+     * @param column column index to remove
+     * @throws IndexOutOfBoundsException
+     */
+    public void removeColumn(int column) throws IndexOutOfBoundsException{
         frame.remove(column);
+        if (frame.isEmpty())
+            nbLine = 0;
     }
 
-   /* //What should we add? TODO
-    public void add(int column) {
-        // To implement
-    }
-
-    //What should we remove? TODO
-    public void remove(int column, int row) {
-        // To implement
-        //Should we simply remove? or put null in given box?
-    }
-
-    //What should we delete? TODO
+    /*//What should we delete? TODO
     public void delete(int column, int row) {
         // To implement
         //Should we simply remove? or put null in given box?
     }*/
 
-    public Object sum(int column) throws UnsupportedOperationException{
+    /**
+     * Computes column elements sum. Allow only if column contains Integer or Double
+     *
+     * @param column index of column to compute
+     * @return Column elements sum, 0 if column is empty
+     * @throws UnsupportedOperationException
+     */
+    public Object sum(int column) throws UnsupportedOperationException {
         return frame.get(column).sum();
     }
 
+    /**
+     * Finds column minimum value
+     *
+     * @param column index of column
+     * @return Column minimum value found, error if column is empty
+     * @throws EmptySerieException
+     * @throws UnsupportedTypeException
+     */
     public Object min(int column) throws EmptySerieException, UnsupportedTypeException {
         return frame.get(column).min();
     }
 
+    /**
+     * Finds column maximum value
+     *
+     * @param column index of column
+     * @return Column maximum value found, throws error if column is empty
+     * @throws EmptySerieException
+     * @throws UnsupportedTypeException
+     */
     public Object max(int column) throws EmptySerieException, UnsupportedTypeException {
         return frame.get(column).max();
     }
@@ -131,9 +191,7 @@ public class DataFrame {
     }
 
     public int getLineSize(){
-        if(frame.size() == 0)
-            return 0;
-        return frame.get(0).size();
+        return nbLine;
     }
 
     public Serie getColumn(int column){
@@ -143,8 +201,17 @@ public class DataFrame {
     @Override
     public String toString() {
         String res = "";
-        for (Serie serie : frame) {
-            res += serie.toString() + "\n";
+        int nbDigit = getLineSize()>=1 ? (int) (Math.log10(getLineSize()) + 1) : 1;
+
+        for (int i=0; i<getLineSize(); i++) {
+            res += i;
+            int nbSpaces = nbDigit -  (i>=1 ? (int) (Math.log10(i) + 1) : 1)+1;
+            res += String.format("%1$"+nbSpaces+"s", "");
+
+            for (int j=0; j<frame.size(); j++) {
+                res += frame.get(j).get(i).toString() + "\t";
+            }
+            res += "\n";
         }
         return res;
     }
