@@ -22,10 +22,12 @@ public class TypeInferer {
         Pattern pattern = Pattern.compile("[a-zA-Z]");
         Matcher match = pattern.matcher(value);
 
+        if (value.equals(""))
+            return "NULL";
         if (match.find())
             return value;
         if (value.contains("."))
-            return Double.parseDouble(value);
-        return Integer.parseInt(value);
+            return Double.parseDouble(value.replace(" ", ""));
+        return Integer.parseInt(value.replace(" ", ""));
     }
 }
