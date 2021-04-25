@@ -186,6 +186,36 @@ public class DataFrame {
         return frame.get(column).max();
     }
 
+    /**
+     * Return a String it contains DataFrame line from given line number to given line number.
+     *
+     * @param begin First line to read
+     * @param end Last line, will not be read
+     * @return String contains read lines, null if begin > end
+     */
+    public String print(int begin, int end) {
+        if (end > nbLine)
+            end = nbLine;
+
+        if (begin >= end)
+            return null;
+
+        int nbDigit = end>=1 ? (int) (Math.log10(end) + 1) : 1;
+        String res = "";
+
+        for (int i=begin; i<end; i++) {
+            res += i;
+            int nbSpaces = nbDigit -  (i>=1 ? (int) (Math.log10(i) + 1) : 1)+1;
+            res += String.format("%1$"+nbSpaces+"s", "");
+
+            for (int j=0; j<frame.size(); j++) {
+                res += frame.get(j).get(i).toString() + "\t";
+            }
+            res += "\n";
+        }
+        return res;
+    }
+
     public int getColumnSize(){
         return frame.size();
     }
@@ -200,19 +230,7 @@ public class DataFrame {
 
     @Override
     public String toString() {
-        String res = "";
-        int nbDigit = getLineSize()>=1 ? (int) (Math.log10(getLineSize()) + 1) : 1;
-
-        for (int i=0; i<getLineSize(); i++) {
-            res += i;
-            int nbSpaces = nbDigit -  (i>=1 ? (int) (Math.log10(i) + 1) : 1)+1;
-            res += String.format("%1$"+nbSpaces+"s", "");
-
-            for (int j=0; j<frame.size(); j++) {
-                res += frame.get(j).get(i).toString() + "\t";
-            }
-            res += "\n";
-        }
-        return res;
+        return print(0, nbLine);
     }
+
 }

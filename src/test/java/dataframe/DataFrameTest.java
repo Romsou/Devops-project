@@ -185,14 +185,32 @@ class DataFrameTest {
         // TODO: Find a way to redirect stdout to the inside of the program
 
         DataFrame frame = new DataFrame(stringSerie, integerSerie, doubleSerie);
-        System.out.println(frame.toString());
+        System.out.println(frame.print(0,frame.getLineSize())); //Entire DataFrame
+        System.out.println(frame.print(0,1000)); //Entire DataFrame
+        System.out.println(frame.print(0,frame.getLineSize()/2)); //first half DataFrame
+        System.out.println(frame.print(frame.getLineSize()/2,frame.getLineSize())); //last half DataFrame
+        System.out.println(frame.print(0,1)); //one line
+        System.out.println(frame.print(0,0)); //zero line
 
         URL resource = getClass().getClassLoader().getResource("addresses.csv");
 
         File f = new File(resource.toURI());
         DataFrame frameCSV = new DataFrame(f);
         System.out.println(frameCSV.toString());
+        System.out.println(frameCSV.print(0,frameCSV.getLineSize())); //Entire DataFrame
+        System.out.println(frameCSV.print(0,1000)); //Entire DataFrame
+        System.out.println(frameCSV.print(0,frameCSV.getLineSize()/2)); //first half DataFrame
+        System.out.println(frameCSV.print(frameCSV.getLineSize()/2,frameCSV.getLineSize())); //last half DataFrame
+        System.out.println(frameCSV.print(0,1)); //one line
+        System.out.println(frameCSV.print(0,0)); //zero line
+    }
 
+    @Test
+    void printException() {
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+            DataFrame frame = new DataFrame(stringSerie);
+            frame.sum(0);
+        });
     }
 
 }
