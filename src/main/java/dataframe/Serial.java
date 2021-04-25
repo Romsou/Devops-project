@@ -1,59 +1,70 @@
 package dataframe;
 
+import CustomExceptions.EmptySerieException;
+import CustomExceptions.UnsupportedTypeException;
+
 public interface Serial<T> {
 
     /**
-     * A methode to add a element to the serie at last position
+     * Adds an element to the serie at the last position
      *
      * @param e the element to add
-     * @return true if the addition is effective
      */
-    boolean add(T e);
+    void add(T e);
 
     /**
-     * Remove the element at indicated position
+     * Removes the element at the given index
      *
-     * @param index the index of element to be removed
-     * @return true if the removal is effective
+     * @param index the index of the element to be removed
      */
-    boolean remove(int index);
+    void remove(int index);
 
     /**
-     * Get the size of the serie
-     *
-     * @return the number of elements in the serie
-     */
-    int size();
-
-    /**
-     * Create a String to represent the serie
-     *
-     * @return the String who represents the serie
-     */
-    String toString();
-
-    /**
-     * Print on standard output a representation of
-     * the serie
-     */
-    void print();
-
-    /**
-     * Modify one element of the serie
-     *
-     * @param e     the new element
-     * @param index the index position of new element
-     * @return true if the modification is successful
-     */
-    boolean set(T e, int index);
-
-    /**
-     * Get the element at the specified index
+     * Gets the element at the specified index
      *
      * @param index a valid position
      * @return the element at the specified index
      */
     T get(int index);
 
+    /**
+     * Modify the element of the serie at the given index
+     *
+     * @param e     the new element
+     * @param index the position of the new element
+     */
+    void set(int index, T e);
+
+    /**
+     * Gets the size of the serie
+     *
+     * @return the number of elements in the serie
+     */
+    int size();
+
+    T min() throws Exception;
+
+    T max() throws UnsupportedTypeException, EmptySerieException;
+
+    /**
+     * Computes the sum of all the elements contained within this serie.
+     * <p>
+     * If this serie contains no element, it returns 0.0. Else
+     *
+     * @return
+     */
+    T sum();
+
+    /**
+     * Prints on standard output a representation of the serie
+     */
+    void print();
+
+    /**
+     * Creates a String to represent the serie
+     *
+     * @return the String who represents the serie
+     */
+    String toString();
 
 }
