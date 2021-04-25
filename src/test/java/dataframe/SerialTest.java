@@ -1,5 +1,7 @@
 package dataframe;
 
+import CustomExceptions.EmptySerieException;
+import CustomExceptions.UnsupportedTypeException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +17,6 @@ class SerialTest {
 
     @BeforeEach
     void setUp() {
-        //TODO: Activate tests once Serie has been coded.
         this.doubleSerie = new Serie<>(SupportedTypes.DOUBLE);
         this.stringSerie = new Serie<>(SupportedTypes.STRING);
         this.integerSerie = new Serie<>(SupportedTypes.INTEGER);
@@ -32,7 +33,6 @@ class SerialTest {
 
     @Test
     void add() {
-        //TODO: Activate test once add has been coded.
         testAddOnDoubleSerie();
         testAddOnIntegerSerie();
         testAddOnStringSerie();
@@ -72,7 +72,6 @@ class SerialTest {
 
     @Test
     void remove() {
-        //TODO: Activate once remove has been coded
         testRemoveDoubleSerie();
         testRemoveIntegerSerie();
         testRemoveStringSerie();
@@ -118,10 +117,120 @@ class SerialTest {
         assertThrows(IndexOutOfBoundsException.class, () -> this.stringSerie.remove(1));
     }
 
+    @Test
+    void testMax() throws EmptySerieException, UnsupportedTypeException {
+        assertNotNull(this.integerSerie);
+        this.integerSerie.add(1);
+        assertEquals(1, this.integerSerie.max());
+        this.integerSerie.add(2);
+        assertEquals(2, this.integerSerie.max());
+        this.integerSerie.add(0);
+        assertEquals(2, this.integerSerie.max());
+
+        assertNotNull(this.doubleSerie);
+        this.doubleSerie.add(1.0);
+        assertEquals(1.0, this.doubleSerie.max());
+        this.doubleSerie.add(2.0);
+        assertEquals(2.0, this.doubleSerie.max());
+        this.doubleSerie.add(0.0);
+        assertEquals(2.0, this.doubleSerie.max());
+    }
+
+    @Test
+    void testMaxException() {
+        assertNotNull(this.stringSerie);
+        this.stringSerie.add("a");
+        this.stringSerie.add("c");
+        this.stringSerie.add("b");
+
+        assertThrows(UnsupportedOperationException.class, () -> this.stringSerie.max());
+
+        assertNotNull(this.integerSerie);
+        assertThrows(EmptySerieException.class, () -> this.integerSerie.max());
+
+        assertNotNull(this.doubleSerie);
+        assertThrows(EmptySerieException.class, () -> this.doubleSerie.max());
+    }
+
+    @Test
+    void testMin() throws Exception {
+        assertNotNull(this.integerSerie);
+        this.integerSerie.add(1);
+        assertEquals(1, this.integerSerie.min());
+        this.integerSerie.add(2);
+        assertEquals(1, this.integerSerie.min());
+        this.integerSerie.add(0);
+        assertEquals(0, this.integerSerie.min());
+
+        assertNotNull(this.doubleSerie);
+        this.doubleSerie.add(1.0);
+        assertEquals(1.0, this.doubleSerie.min());
+        this.doubleSerie.add(2.0);
+        assertEquals(1.0, this.doubleSerie.min());
+        this.doubleSerie.add(0.0);
+        assertEquals(0.0, this.doubleSerie.min());
+    }
+
+
+    @Test
+    void testMinException() {
+        assertNotNull(this.stringSerie);
+        this.stringSerie.add("a");
+        this.stringSerie.add("c");
+        this.stringSerie.add("b");
+
+        assertThrows(UnsupportedOperationException.class, () -> this.stringSerie.min());
+
+        assertNotNull(this.integerSerie);
+        assertThrows(EmptySerieException.class, () -> this.integerSerie.min());
+
+        assertNotNull(this.doubleSerie);
+        assertThrows(EmptySerieException.class, () -> this.doubleSerie.min());
+    }
+
+
+    @Test
+    void testSum() {
+        assertNotNull(this.integerSerie);
+        assertEquals(0, this.integerSerie.sum());
+        this.integerSerie.add(1);
+        assertEquals(1, this.integerSerie.sum());
+        this.integerSerie.add(2);
+        assertEquals(3, this.integerSerie.sum());
+        this.integerSerie.add(0);
+        assertEquals(3, this.integerSerie.sum());
+        this.integerSerie.add(4);
+        assertEquals(7, this.integerSerie.sum());
+        this.integerSerie.add(11);
+        assertEquals(18, this.integerSerie.sum());
+
+        assertNotNull(this.doubleSerie);
+        assertEquals(0.0, this.doubleSerie.sum());
+        this.doubleSerie.add(1.0);
+        assertEquals(1.0, this.doubleSerie.sum());
+        this.doubleSerie.add(2.0);
+        assertEquals(3.0, this.doubleSerie.sum());
+        this.doubleSerie.add(0.0);
+        assertEquals(3.0, this.doubleSerie.sum());
+        this.doubleSerie.add(4.0);
+        assertEquals(7.0, this.doubleSerie.sum());
+        this.doubleSerie.add(11.0);
+        assertEquals(18.0, this.doubleSerie.sum());
+
+    }
+
+    @Test
+    void testSumException() {
+        assertNotNull(this.stringSerie);
+        this.stringSerie.add("a");
+        this.stringSerie.add("c");
+        this.stringSerie.add("b");
+
+        assertThrows(UnsupportedOperationException.class, () -> this.stringSerie.sum());
+    }
 
     @Test
     void size() {
-        // TODO: Activate once size is coded.
         assertNotNull(this.integerSerie);
         assertEquals(0, this.integerSerie.size());
 
@@ -134,19 +243,18 @@ class SerialTest {
             this.integerSerie.remove(0);
             assertEquals(5 - (i + 1), this.integerSerie.size());
         }
-        
     }
 
 
     @Test
     void print() {
         // TODO: Find a way to redirect stdout to the inside of the program
+
     }
 
 
     @Test
     void set() {
-        // TODO: Activate once set is coded.
         assertNotNull(this.integerSerie);
 
         for (int i = 1; i <= 3; i++)
@@ -168,13 +276,10 @@ class SerialTest {
 
     @Test
     void get() {
-        // TODO: Activate once get is coded.
         assertNotNull(this.integerSerie);
         assertThrows(IndexOutOfBoundsException.class, () -> this.integerSerie.get(0));
 
         this.integerSerie.add(1);
         assertEquals(1, this.integerSerie.get(0));
-
     }
-
 }
