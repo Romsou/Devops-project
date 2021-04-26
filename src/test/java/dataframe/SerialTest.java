@@ -6,6 +6,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SerialTest {
@@ -249,7 +252,16 @@ class SerialTest {
     @Test
     void print() {
         // TODO: Find a way to redirect stdout to the inside of the program
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PrintStream stdOut = System.out;
+        System.setOut(new PrintStream(out));
 
+        //this.integerSerie.setColumnName("Test");
+        this.stringSerie.add("ab");
+        this.stringSerie.add("cd");
+        this.stringSerie.print();
+        System.setOut(stdOut);
+        assertEquals("ab\ncd\n", out.toString());
     }
 
 
