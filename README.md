@@ -1,6 +1,5 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Romsou/Devops-project/commit-activity)
-[![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
-[![GitHub contributors](https://img.shields.io/github/contributors/Naereen/badges.svg)](https://github.com/Romsou/Devops-project/graphs/contributors/)
+![AppVeyor](https://img.shields.io/appveyor/build/Romsou/Devops-project)
 # Devops project
 
 
