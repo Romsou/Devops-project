@@ -1,5 +1,6 @@
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Romsou/Devops-project/commit-activity)
 ![AppVeyor](https://img.shields.io/appveyor/build/Romsou/Devops-project)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/Romsou/Devops-project)
+![Packagist Stars](https://img.shields.io/packagist/stars/Romsou/!%5BGitHub%20pull%20requests%5D(https://img.shields.io/github/issues-pr/Romsou/Devops-project))
 # Devops project
 
 
