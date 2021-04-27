@@ -1,16 +1,15 @@
 package dataframe;
 
-import CustomExceptions.ColumnSizeMissmatch;
-import CustomExceptions.EmptyArrayException;
-import CustomExceptions.EmptySerieException;
-import CustomExceptions.UnsupportedTypeException;
+import CustomExceptions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -182,49 +181,47 @@ class DataFrameTest {
 
     @Test
     void print() throws UnsupportedTypeException, EmptyArrayException, FileNotFoundException, URISyntaxException, ColumnSizeMissmatch {
-        // TODO: Find a way to redirect stdout to the inside of the program
-
         DataFrame frame = new DataFrame(stringSerie, integerSerie, doubleSerie);
-        System.out.println(frame.print(0,frame.getNbLine())); //Entire DataFrame
-        System.out.println(frame.print(0,1000)); //Entire DataFrame
-        System.out.println(frame.print(0,frame.getNbLine()/2)); //first half DataFrame
-        System.out.println(frame.print(frame.getNbLine()/2,frame.getNbLine())); //last half DataFrame
-        System.out.println(frame.print(0,1)); //one line
-        System.out.println(frame.print(0,0)); //zero line
+        assertEquals("0 a\t1\t1.1\t\n", frame.print(0,1));
+        assertEquals("0 a\t1\t1.1\t\n1 a\t1\t1.1\t\n2 a\t1\t1.1\t\n", frame.print(0,3));
+        assertEquals("3 a\t1\t1.1\t\n4 a\t1\t1.1\t\n", frame.print(3,5));
+        assertEquals("8 a\t1\t1.1\t\n9 a\t1\t1.1\t\n", frame.print(8,100));
+        assertEquals(null, frame.print(0,0));
+        assertEquals(null, frame.print(9,8));
 
         URL resource = getClass().getClassLoader().getResource("addresses.csv");
 
         File f = new File(resource.toURI());
         DataFrame frameCSV = new DataFrame(f);
-        System.out.println(frameCSV.toString());
-        System.out.println(frameCSV.print(0,frameCSV.getNbLine())); //Entire DataFrame
-        System.out.println(frameCSV.print(0,1000)); //Entire DataFrame
-        System.out.println(frameCSV.print(0,frameCSV.getNbLine()/2)); //first half DataFrame
-        System.out.println(frameCSV.print(frameCSV.getNbLine()/2,frameCSV.getNbLine())); //last half DataFrame
-        System.out.println(frameCSV.print(0,1)); //one line
-        System.out.println(frameCSV.print(0,0)); //zero line
+        assertEquals("0 John\tDoe\t120 jefferson st.\tRiverside\t NJ\t8075\t\n", frameCSV.print(0,1));
+        assertEquals("2 John Da Man\tRepici\t120 Jefferson St.\tRiverside\t NJ\t8075\t\n" +
+                "3 Stephen\tTyler\t7452 Terrace At the Plaza road\tSomeTown\tSD\t91234\t\n" +
+                "4 NULL\tBlankman\tNULL\tSomeTown\t SD\t298\t\n", frameCSV.print(2,5));
+        assertEquals(null, frameCSV.print(0,0));
+        assertEquals(null, frameCSV.print(1,0));
+
     }
 
     @Test
-    void selectFromColumn() throws ColumnSizeMissmatch, EmptyArrayException, UnsupportedTypeException, EmptySerieException {
+    void selectFromColumn() throws ColumnSizeMissmatch, EmptyArrayException, UnsupportedTypeException, EmptySerieException, ColumnNotFoundException {
         DataFrame frame = new DataFrame(stringSerie, integerSerie, doubleSerie);
 
-        ArrayList<Integer> columnsIndexes = new ArrayList<>();
-        DataFrame frame1 = frame.DataFrameFromColumns(columnsIndexes);
+        ArrayList<String> columnsNames = new ArrayList<>();
+        DataFrame frame1 = frame.DataFrameFromColumns(columnsNames);
         assertEquals(0, frame1.getNbColumn());
         assertEquals(0, frame1.getNbLine());
 
-        columnsIndexes.add(1);
+        columnsNames.add("column1");
 
-        DataFrame frame2 = frame.DataFrameFromColumns(columnsIndexes);
+        DataFrame frame2 = frame.DataFrameFromColumns(columnsNames);
         assertEquals(1, frame2.getNbColumn());
         assertEquals(10, frame2.getNbLine());
         assertEquals(1, frame2.max(0));
 
-        columnsIndexes.remove(0);
-        columnsIndexes.add(0);
-        columnsIndexes.add(2);
-        DataFrame frame3 = frame.DataFrameFromColumns(columnsIndexes);
+        columnsNames.remove(0);
+        columnsNames.add("column0");
+        columnsNames.add("column2");
+        DataFrame frame3 = frame.DataFrameFromColumns(columnsNames);
 
         assertEquals(2, frame3.getNbColumn());
         assertEquals(10, frame3.getNbLine());
@@ -234,11 +231,11 @@ class DataFrameTest {
     @Test
     void selectFromColumnException() throws ColumnSizeMissmatch, EmptyArrayException, UnsupportedTypeException {
         DataFrame frame = new DataFrame(stringSerie, integerSerie, doubleSerie);
-        ArrayList<Integer> columnsIndex = new ArrayList<>();
-        columnsIndex.add(1);
-        columnsIndex.add(frame.getNbLine());
-        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-            DataFrame frame2 = frame.DataFrameFromColumns(columnsIndex);
+        ArrayList<String> columnNames = new ArrayList<>();
+        columnNames.add("column1");
+        columnNames.add("column"+frame.getNbLine());
+        Assertions.assertThrows(ColumnNotFoundException.class, () -> {
+            DataFrame frame2 = frame.DataFrameFromColumns(columnNames);
         });
     }
 

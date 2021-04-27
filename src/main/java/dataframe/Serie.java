@@ -182,7 +182,7 @@ public class Serie<T> implements Serial<T> {
 
 
     public void print() {
-        //System.out.println(columnName);
+        System.out.println(columnName);
         for (T elt : elements)
             System.out.println(elt);
     }
