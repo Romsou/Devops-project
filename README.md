@@ -1,5 +1,3 @@
-![AppVeyor](https://img.shields.io/appveyor/build/Romsou/Devops-project)
-
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/Romsou/Devops-project)
 
 # Devops project
