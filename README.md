@@ -1,4 +1,7 @@
+![GitHub pull requests](https://img.shields.io/github/issues-pr/Romsou/Devops-project)
+
 # Devops project
+
 
 ## Features
 
