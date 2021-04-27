@@ -10,13 +10,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class DataFrame {
 
     private ArrayList<Serie> frame;
     private int nbLine;
+
+    public DataFrame() {
+        frame = new ArrayList<Serie>();
+        nbLine = 0;
+    }
 
     /**
      * Create a DataFrame from a CSV file. Note that we not yet handle CSV File with escape
@@ -40,13 +44,12 @@ public class DataFrame {
         int i = 0;
         for(String s : lineSplit) {
             Object inferred = TypeInferer.inferType(s);
-            if (inferred instanceof String) {
+            if (inferred instanceof String)
                 frame.add(new Serie<>(SupportedTypes.STRING));
-            } else if (inferred instanceof Integer) {
+            else if (inferred instanceof Integer)
                 frame.add(new Serie<>(SupportedTypes.INTEGER));
-            } else if (inferred instanceof Double) {
+            else if (inferred instanceof Double)
                 frame.add(new Serie<>(SupportedTypes.DOUBLE));
-            }
             i++;
         }
 
@@ -57,14 +60,14 @@ public class DataFrame {
                 frame.get(i).add(TypeInferer.inferType(s));
                 i++;
             }
+            nbLine++;
             line = in.nextLine();
             lineSplit = line.split(",");
-            if (lineSplit.length != elementPerLine) {
-                throw new ColumnSizeMissmatch();
-            }
-        } while(in.hasNext());
-         nbLine = i-1;
 
+            if (lineSplit.length != elementPerLine)
+                throw new ColumnSizeMissmatch();
+
+        } while(in.hasNext());
     }
 
     /**
@@ -78,7 +81,7 @@ public class DataFrame {
         nbLine = 0;
 
         for(ArrayList<Object> array : arrays)
-            addColumn(frame.size(), array);
+            addColumn(getNbColumn(), array);
     }
 
     /**
@@ -92,8 +95,8 @@ public class DataFrame {
         try {
             frame.remove(columnIndex);
         } catch (IndexOutOfBoundsException e) {
-
         }
+
         if (array.size() > 0 && nbLine == array.size() || array.size() > 0 && nbLine == 0) {
             if (nbLine == 0)
                 nbLine = array.size();
@@ -130,7 +133,7 @@ public class DataFrame {
      * @throws ColumnSizeMissmatch
      */
     public void addColumn(ArrayList<Object> array) throws UnsupportedTypeException, EmptyArrayException, ColumnSizeMissmatch {
-        addColumn(frame.size(), array);
+        addColumn(getNbColumn(), array);
     }
 
     /**
@@ -145,11 +148,63 @@ public class DataFrame {
             nbLine = 0;
     }
 
-    /*//What should we delete? TODO
-    public void delete(int column, int row) {
-        // To implement
-        //Should we simply remove? or put null in given box?
-    }*/
+    /**
+     * Create a new DataFrame with given columns index from this.
+     * @param columnIndexes Array of columns index will be copy into new DataFrame
+     * @return New DataFrame created
+     * @throws IndexOutOfBoundsException
+     */
+    public DataFrame DataFrameFromColumns(ArrayList<Integer> columnIndexes) throws IndexOutOfBoundsException {
+        DataFrame newFrame = new DataFrame();
+        if (columnIndexes.size() == 0) {
+            return newFrame;
+        }
+
+        newFrame.nbLine = this.nbLine;
+        for(int i=0; i<columnIndexes.size(); i++) {
+            try {
+                newFrame.frame.add(i, this.frame.get(columnIndexes.get(i)));
+            } catch (IndexOutOfBoundsException e) {
+                throw e;
+            }
+        }
+        return newFrame;
+    }
+
+    /**
+     *
+     * @param lineIndexes Array of lines index will be copy into new DataFrame
+     * @return
+     * @throws IndexOutOfBoundsException
+     */
+    public DataFrame DataFrameFromLines(ArrayList<Integer> lineIndexes) throws IndexOutOfBoundsException {
+        DataFrame newFrame = new DataFrame();
+        if (lineIndexes.size() == 0) {
+            return  newFrame;
+        }
+
+        //First, create all columns
+        for(int i = 0; i<this.getNbColumn(); i++) {
+            Serie column = new Serie<>(this.getColumn(i).type);
+            newFrame.frame.add(column);
+        }
+
+        //Fill column with asked lines
+        for (int i=0; i<lineIndexes.size(); i++) {
+            newFrame.nbLine++;
+            for (int j=0; j< newFrame.getNbColumn(); j++) {
+                Object OldFrameValue = null;
+                try {
+                    OldFrameValue = this.frame.get(j).get(lineIndexes.get(i));
+                } catch (IndexOutOfBoundsException e) {
+                    throw e;
+                }
+                newFrame.frame.get(j).add(OldFrameValue);
+            }
+        }
+        return newFrame;
+    }
+
 
     /**
      * Computes column elements sum. Allow only if column contains Integer or Double
@@ -186,6 +241,7 @@ public class DataFrame {
         return frame.get(column).max();
     }
 
+
     /**
      * Return a String it contains DataFrame line from given line number to given line number.
      *
@@ -208,7 +264,7 @@ public class DataFrame {
             int nbSpaces = nbDigit -  (i>=1 ? (int) (Math.log10(i) + 1) : 1)+1;
             res += String.format("%1$"+nbSpaces+"s", "");
 
-            for (int j=0; j<frame.size(); j++) {
+            for (int j=0; j<getNbColumn(); j++) {
                 res += frame.get(j).get(i).toString() + "\t";
             }
             res += "\n";
@@ -216,11 +272,11 @@ public class DataFrame {
         return res;
     }
 
-    public int getColumnSize(){
+    public int getNbColumn(){
         return frame.size();
     }
 
-    public int getLineSize(){
+    public int getNbLine(){
         return nbLine;
     }
 

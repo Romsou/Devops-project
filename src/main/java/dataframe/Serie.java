@@ -8,15 +8,23 @@ import java.util.List;
 
 public class Serie<T> implements Serial<T> {
 
-    protected List<T> elements;
+    private List<T> elements;
+
     protected SupportedTypes type;
 
+    private String columnName;
 
     public Serie(SupportedTypes type) {
-        elements = new ArrayList<>();
+        this.elements = new ArrayList<>();
         this.type = type;
+        columnName = null;
     }
 
+    public Serie(SupportedTypes type, String name) {
+        this.elements = new ArrayList<>();
+        this.type = type;
+        this.columnName = name;
+    }
 
     public void add(T e) {
         elements.add(e);
@@ -171,14 +179,34 @@ public class Serie<T> implements Serial<T> {
         throw new UnsupportedOperationException("Can't sum strings");
     }
 
+
     public void print() {
+        System.out.println(columnName);
         for (T elt : elements)
             System.out.println(elt);
+    }
+
+
+    public SupportedTypes getType() {
+        return type;
+    }
+
+
+    public void setType(SupportedTypes type) {
+        this.type = type;
+    }
+
+
+    public String getColumnName() {
+        return columnName;
+    }
+
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
     }
 
 
     public String toString() {
         return "" + elements;
     }
-
 }
