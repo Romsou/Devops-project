@@ -251,7 +251,6 @@ class SerialTest {
 
     @Test
     void print() {
-        // TODO: Find a way to redirect stdout to the inside of the program
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintStream stdOut = System.out;
         System.setOut(new PrintStream(out));
@@ -259,9 +258,10 @@ class SerialTest {
         //this.integerSerie.setColumnName("Test");
         this.stringSerie.add("ab");
         this.stringSerie.add("cd");
+        this.stringSerie.setColumnName("column0");
         this.stringSerie.print();
         System.setOut(stdOut);
-        assertEquals("null\nab\ncd\n", out.toString());
+        assertEquals("column0\nab\ncd\n", out.toString());
     }
 
 
