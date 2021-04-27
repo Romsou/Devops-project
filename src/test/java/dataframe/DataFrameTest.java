@@ -181,7 +181,24 @@ class DataFrameTest {
 
     @Test
     void print() throws UnsupportedTypeException, EmptyArrayException, FileNotFoundException, URISyntaxException, ColumnSizeMissmatch {
+        DataFrame frame = new DataFrame(stringSerie, integerSerie, doubleSerie);
+        assertEquals("0 a\t1\t1.1\t\n", frame.print(0,1));
+        assertEquals("0 a\t1\t1.1\t\n1 a\t1\t1.1\t\n2 a\t1\t1.1\t\n", frame.print(0,3));
+        assertEquals("3 a\t1\t1.1\t\n4 a\t1\t1.1\t\n", frame.print(3,5));
+        assertEquals("8 a\t1\t1.1\t\n9 a\t1\t1.1\t\n", frame.print(8,100));
+        assertEquals(null, frame.print(0,0));
+        assertEquals(null, frame.print(9,8));
 
+        URL resource = getClass().getClassLoader().getResource("addresses.csv");
+
+        File f = new File(resource.toURI());
+        DataFrame frameCSV = new DataFrame(f);
+        assertEquals("0 John\tDoe\t120 jefferson st.\tRiverside\t NJ\t8075\t\n", frameCSV.print(0,1));
+        assertEquals("2 John Da Man\tRepici\t120 Jefferson St.\tRiverside\t NJ\t8075\t\n" +
+                "3 Stephen\tTyler\t7452 Terrace At the Plaza road\tSomeTown\tSD\t91234\t\n" +
+                "4 NULL\tBlankman\tNULL\tSomeTown\t SD\t298\t\n", frameCSV.print(2,5));
+        assertEquals(null, frameCSV.print(0,0));
+        assertEquals(null, frameCSV.print(1,0));
 
     }
 

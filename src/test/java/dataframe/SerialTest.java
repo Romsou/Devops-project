@@ -261,7 +261,7 @@ class SerialTest {
         this.stringSerie.add("cd");
         this.stringSerie.print();
         System.setOut(stdOut);
-        assertEquals("ab\ncd\n", out.toString());
+        assertEquals("null\nab\ncd\n", out.toString());
     }
 
 
