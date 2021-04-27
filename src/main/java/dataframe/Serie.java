@@ -5,6 +5,7 @@ import CustomExceptions.UnsupportedTypeException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Serie<T> implements Serial<T> {
 
@@ -186,7 +187,6 @@ public class Serie<T> implements Serial<T> {
             System.out.println(elt);
     }
 
-
     public SupportedTypes getType() {
         return type;
     }
@@ -202,9 +202,8 @@ public class Serie<T> implements Serial<T> {
     }
 
     public void setColumnName(String columnName) {
-        this.columnName = columnName;
+        this.columnName = columnName.toLowerCase();
     }
-
 
     public String toString() {
         return "" + elements;

@@ -56,6 +56,11 @@ public interface Serial<T> {
     T sum();
 
     /**
+     * Set column name.
+     */
+    void setColumnName(String name);
+
+    /**
      * Prints on standard output a representation of the serie
      */
     void print();
@@ -66,5 +71,7 @@ public interface Serial<T> {
      * @return the String who represents the serie
      */
     String toString();
+
+
 
 }
