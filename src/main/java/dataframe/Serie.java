@@ -113,7 +113,8 @@ public class Serie<T> implements Serial<T> {
         if(size() == 0)
             throw new EmptySerieException();
 
-        double sum = (double) this.sum();
+
+        double sum = this.sum() instanceof Integer ? ((Integer) this.sum()).doubleValue() : (double) this.sum();
         return sum / size();
     }
 
