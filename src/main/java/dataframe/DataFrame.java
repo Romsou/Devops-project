@@ -154,7 +154,7 @@ public class DataFrame {
 
 
     /**
-     * Create a new DataFrame with given columns index from this.
+     * Create a new DataFrame from this with given columns names.
      *
      * @param columnNames Array of columns index will be copy into new DataFrame
      * @return New DataFrame created
@@ -178,6 +178,8 @@ public class DataFrame {
 
 
     /**
+     * Create a new DataFrame from this with given lines indexes.
+     *
      * @param lineIndexes Array of lines index will be copy into new DataFrame
      * @return New DataFrame created
      * @throws IndexOutOfBoundsException
