@@ -2,6 +2,12 @@
 
 # Devops project
 
+## Documentation
+
+We created a website thanks to github to host the javadoc of our projet. You may 
+find it here: 
+
+- https://romsou.github.io/Devops-project/
 
 ## Features
 
