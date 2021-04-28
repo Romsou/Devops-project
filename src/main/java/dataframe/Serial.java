@@ -28,7 +28,7 @@ public interface Serial<T> {
     T get(int index);
 
     /**
-     * Modify the element of the serie at the given index
+     * Modifies the element of the serie at the given index
      *
      * @param e     the new element
      * @param index the position of the new element
