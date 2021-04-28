@@ -24,7 +24,7 @@ public class DataFrame {
     /**
      * Creates a DataFrame from a CSV file. Note that we not yet handle CSV File with escape
      * character " (quotation mark), and then we not handle CSV file which contain , (comma) in cells.
-     * Note that columns name will be "column"+<Column-Index> by default.
+     * Note that columns name will be "column" + column index by default.
      *
      * @param csv CSV file to read.
      * @throws FileNotFoundException If file doesn't exist with specify path
@@ -73,7 +73,7 @@ public class DataFrame {
 
     /**
      * Creates a new DataFrame and fills its column with given arrays. Note that columns name will be
-     * "column"+<Column-Index> by default.
+     * "column"+ column index by default.
      *
      * @param arrays columns to add in DataFrame.
      * @throws UnsupportedTypeException if array elements type is not Integer, Double or String
@@ -211,7 +211,7 @@ public class DataFrame {
      * Create a new DataFrame by selecting each line which contains in a specific column, a minimum given double value.
      *
      * @param columnName Column name to check
-     * @param minValue Minimum value
+     * @param minValue   Minimum value
      * @return New DataFrame created, null if column type is not double
      * @throws IndexOutOfBoundsException
      * @throws ColumnNotFoundException
@@ -234,7 +234,7 @@ public class DataFrame {
                 if ((Double) serie.get(i) >= minValue)
                     addLine = true;
             } else if (serie.getType().equals(SupportedTypes.INTEGER)) {
-                if (Double.valueOf((Integer)serie.get(i)) >= minValue)
+                if (Double.valueOf((Integer) serie.get(i)) >= minValue)
                     addLine = true;
             }
             if (addLine) {
@@ -253,7 +253,7 @@ public class DataFrame {
      * Create a new DataFrame by selecting each line which contains in a specific column, a minimum given int value.
      *
      * @param columnName Column name to check
-     * @param minValue Minimum value
+     * @param minValue   Minimum value
      * @return New DataFrame created, null if column type is not int
      * @throws IndexOutOfBoundsException
      * @throws ColumnNotFoundException
@@ -305,7 +305,7 @@ public class DataFrame {
      *
      * @param begin First line to read
      * @param end   Last line, will not be read
-     * @return String contains read lines, null if begin > end
+     * @return String contains read lines, null if begin superior to end end
      */
     public String print(int begin, int end) {
         if (end > nbLine)
