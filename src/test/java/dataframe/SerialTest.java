@@ -296,20 +296,20 @@ class SerialTest {
     }
 
     @Test
-    void mean() throws Exception{
+    void mean() {
         testMeanStringSerie();
         testMeanIntegerSerie();
         testMeanDoubleSerie();
     }
 
-    private void testMeanStringSerie() throws Exception{
+    private void testMeanStringSerie() {
         assertThrows(UnsupportedTypeException.class, () -> this.stringSerie.mean());
         this.stringSerie.add("bou");
         this.stringSerie.add("ba");
         assertThrows(UnsupportedTypeException.class, () -> this.stringSerie.mean());
     }
 
-    private void testMeanIntegerSerie() throws Exception{
+    private void testMeanIntegerSerie() {
         assertThrows(EmptySerieException.class, () -> this.integerSerie.mean());
 
         this.integerSerie.add(1);
@@ -331,7 +331,7 @@ class SerialTest {
         assertEquals((double)5.5, this.integerSerie.mean());
     }
 
-    private void testMeanDoubleSerie() throws Exception{
+    private void testMeanDoubleSerie(){
         assertThrows(EmptySerieException.class, () -> this.doubleSerie.mean());
 
         this.doubleSerie.add((double)1.1);
@@ -348,7 +348,7 @@ class SerialTest {
         this.doubleSerie.add((double)10.1);
         this.doubleSerie.add((double)-6.2);
 
-        assertEquals((double)9.13, this.doubleSerie.mean());
+        assertEquals((double)(1.6666666666666663), this.doubleSerie.mean());
 
 
     }
