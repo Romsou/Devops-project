@@ -294,4 +294,66 @@ class SerialTest {
         this.integerSerie.add(1);
         assertEquals(1, this.integerSerie.get(0));
     }
+
+    @Test
+    void mean() throws Exception{
+        testMeanStringSerie();
+        testMeanIntegerSerie();
+        testMeanDoubleSerie();
+    }
+
+    private void testMeanStringSerie() throws Exception{
+        assertThrows(UnsupportedTypeException.class, () -> this.stringSerie.mean());
+        this.stringSerie.add("bou");
+        this.stringSerie.add("ba");
+        assertThrows(UnsupportedTypeException.class, () -> this.stringSerie.mean());
+    }
+
+    private void testMeanIntegerSerie() throws Exception{
+        assertThrows(EmptySerieException.class, () -> this.integerSerie.mean());
+
+        this.integerSerie.add(1);
+        this.integerSerie.add(1);
+        this.integerSerie.add(1);
+        this.integerSerie.add(1);
+
+        assertEquals(1, this.integerSerie.mean());
+
+        for(int i=0; i< 4; i++){
+            this.integerSerie.remove(0);
+        }
+
+        //this.integerSerie.add(2);
+        this.integerSerie.add(4);
+        //this.integerSerie.add(-2);
+        this.integerSerie.add(7);
+
+        assertEquals((double)5.5, this.integerSerie.mean());
+    }
+
+    private void testMeanDoubleSerie() throws Exception{
+        assertThrows(EmptySerieException.class, () -> this.doubleSerie.mean());
+
+        this.doubleSerie.add((double)1.1);
+        this.doubleSerie.add((double)1.1);
+        this.doubleSerie.add((double)1.1);
+
+        assertEquals((double)1.1, this.doubleSerie.mean());
+
+        for(int i=0; i< 3; i++){
+            this.doubleSerie.remove(0);
+        }
+
+        this.doubleSerie.add((double)1.1);
+        this.doubleSerie.add((double)10.1);
+        this.doubleSerie.add((double)-6.2);
+
+        assertEquals((double)9.13, this.doubleSerie.mean());
+
+
+    }
+
+
+
+
 }
