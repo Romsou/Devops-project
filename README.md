@@ -48,13 +48,17 @@ For more security, we define the **dev** branch as the default branch for pull r
 Moreover we spontaneously create special branches, such as **cleaning** when performing
 singular actions such as cleaning the project, or making a very specific fix.
 
-We also added a pull request template to smooth workflow and accelerate the integration.
+We also added a pull request template to smooth workflow and accelerate the integration and made
+use of all the tools given by github to organize work. (creation of project, labels,
+milestones, and issued to assign and keep track of the work.)
+
 
 We finally decided to authorize merging only if a pull request or a push passes all unit
 tests to avoid regressions, only making exceptions for test modification, fix,
 and hotfix or if a feature is required rapidly and no one can review the files for now.
 However, such a merge still needs to pass all tests. This choice was made to add flexibility
 to the workflow considering the limited time we had to work with.
+
 
 ## Feedback
 
