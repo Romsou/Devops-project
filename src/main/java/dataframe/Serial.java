@@ -28,7 +28,7 @@ public interface Serial<T> {
     T get(int index);
 
     /**
-     * Modify the element of the serie at the given index
+     * Modifies the element of the serie at the given index
      *
      * @param e     the new element
      * @param index the position of the new element
@@ -42,21 +42,44 @@ public interface Serial<T> {
      */
     int size();
 
-    T min() throws Exception;
+    /**
+     * Finds the minimum number in numeric series.
+     *
+     * @return The minimum number of the serie.
+     * @throws UnsupportedTypeException Thrown when trying to use this method on a string.
+     * @throws EmptySerieException      Thrown when this list is empty.
+     */
+    T min() throws UnsupportedTypeException, EmptySerieException;
 
+    /**
+     * Finds the maximum number in numeric series.
+     *
+     * @return The maximum number of the serie.
+     * @throws UnsupportedTypeException Thrown when trying to use this method on a string.
+     * @throws EmptySerieException      Thrown when this list is empty.
+     */
     T max() throws UnsupportedTypeException, EmptySerieException;
+
+    /**
+     * Computes the mean of this serie if it contains only numerics.
+     *
+     * @return the mean of this serie.
+     * @throws UnsupportedTypeException Thrown when trying to use this method on a string.
+     * @throws EmptySerieException      Thrown when this list is empty.
+     */
+    double mean() throws UnsupportedTypeException, EmptySerieException;
 
     /**
      * Computes the sum of all the elements contained within this serie.
      * <p>
-     * If this serie contains no element, it returns 0.0. Else
+     * If this serie contains no element, it returns 0.0.
      *
-     * @return
+     * @return The sum of all the numeric elements of this serie.
      */
     T sum();
 
     /**
-     * Set column name.
+     * Sets column name.
      */
     void setColumnName(String name);
 

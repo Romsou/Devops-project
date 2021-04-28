@@ -22,13 +22,13 @@ public class DataFrame {
 
 
     /**
-     * Create a DataFrame from a CSV file. Note that we not yet handle CSV File with escape
+     * Creates a DataFrame from a CSV file. Note that we not yet handle CSV File with escape
      * character " (quotation mark), and then we not handle CSV file which contain , (comma) in cells.
      * Note that columns name will be "column"+<Column-Index> by default.
      *
      * @param csv CSV file to read.
      * @throws FileNotFoundException If file doesn't exist with specify path
-     * @throws ColumnSizeMismatch    if CSV file contains different column length
+     * @throws ColumnSizeMismatch    if CSV file contains different column lengths
      */
     public DataFrame(File csv) throws FileNotFoundException, ColumnSizeMismatch {
         frame = new ArrayList<Serie>();
@@ -72,7 +72,7 @@ public class DataFrame {
 
 
     /**
-     * Create a new DataFrame and fill its column with given arrays. Note that columns name will be
+     * Creates a new DataFrame and fills its column with given arrays. Note that columns name will be
      * "column"+<Column-Index> by default.
      *
      * @param arrays columns to add in DataFrame.
@@ -88,7 +88,7 @@ public class DataFrame {
 
 
     /**
-     * Add a given array at given index into DataFrame.
+     * Adds a given array at given index into DataFrame.
      *
      * @param columnIndex Index where array should be add.
      * @param array       Array of Objects
@@ -128,7 +128,7 @@ public class DataFrame {
 
 
     /**
-     * Add column at the end of DataFrame
+     * Adds column at the end of DataFrame
      *
      * @param array Array to add in DataFrame
      * @throws UnsupportedTypeException
@@ -141,7 +141,7 @@ public class DataFrame {
 
 
     /**
-     * Removes column specify by it index
+     * Removes column specified by it index
      *
      * @param column column index to remove
      * @throws IndexOutOfBoundsException
@@ -154,7 +154,7 @@ public class DataFrame {
 
 
     /**
-     * Create a new DataFrame from this with given columns names.
+     * Creates a new DataFrame with given column names.
      *
      * @param columnNames Array of columns index will be copy into new DataFrame
      * @return New DataFrame created
@@ -178,7 +178,7 @@ public class DataFrame {
 
 
     /**
-     * Create a new DataFrame from this with given lines indexes.
+     * Creates a new DataFrame with given row indexes.
      *
      * @param lineIndexes Array of lines index will be copy into new DataFrame
      * @return New DataFrame created
@@ -334,7 +334,7 @@ public class DataFrame {
 
 
     /**
-     * Search the serie with matching name in all DataFrame
+     * Searches the serie with matching name in all DataFrame
      *
      * @param name Name of serie to search
      * @return Matching Serie if found, null otherwise
@@ -349,7 +349,7 @@ public class DataFrame {
 
 
     /**
-     * Get the number of columns
+     * Gets the number of columns
      *
      * @return number of columns
      */
@@ -359,7 +359,7 @@ public class DataFrame {
 
 
     /**
-     * Get the number of lines
+     * Gets the number of lines
      *
      * @return number of lines
      */
@@ -369,7 +369,7 @@ public class DataFrame {
 
 
     /**
-     * Get a specific column from is index.
+     * Gets a specific column from is index.
      *
      * @param column column index
      * @return matching serie
