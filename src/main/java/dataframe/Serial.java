@@ -43,7 +43,7 @@ public interface Serial<T> {
     int size();
 
     /**
-     * Find the minimum number in numeric series.
+     * Finds the minimum number in numeric series.
      *
      * @return The minimum number of the serie.
      * @throws UnsupportedTypeException Thrown when trying to use this method on a string.
@@ -52,7 +52,7 @@ public interface Serial<T> {
     T min() throws UnsupportedTypeException, EmptySerieException;
 
     /**
-     * Find the maximum number in numeric series.
+     * Finds the maximum number in numeric series.
      *
      * @return The maximum number of the serie.
      * @throws UnsupportedTypeException Thrown when trying to use this method on a string.
@@ -61,7 +61,7 @@ public interface Serial<T> {
     T max() throws UnsupportedTypeException, EmptySerieException;
 
     /**
-     * Compute the mean of this serie if it contains only numerics.
+     * Computes the mean of this serie if it contains only numerics.
      *
      * @return the mean of this serie.
      * @throws UnsupportedTypeException Thrown when trying to use this method on a string.
