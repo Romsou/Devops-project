@@ -5,11 +5,10 @@ import CustomExceptions.UnsupportedTypeException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class Serie<T> implements Serial<T> {
 
-    private List<T> elements;
+    private final List<T> elements;
 
     protected SupportedTypes type;
 

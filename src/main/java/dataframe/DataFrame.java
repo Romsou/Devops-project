@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class DataFrame {
 
-    private ArrayList<Serie> frame;
+    private final ArrayList<Serie> frame;
     private int nbLine;
 
 
@@ -28,9 +28,9 @@ public class DataFrame {
      *
      * @param csv CSV file to read.
      * @throws FileNotFoundException If file doesn't exist with specify path
-     * @throws ColumnSizeMissmatch if CSV file contains different column length
+     * @throws ColumnSizeMismatch    if CSV file contains different column length
      */
-    public DataFrame(File csv) throws FileNotFoundException, ColumnSizeMissmatch {
+    public DataFrame(File csv) throws FileNotFoundException, ColumnSizeMismatch {
         frame = new ArrayList<Serie>();
         nbLine = 0;
 
@@ -42,22 +42,21 @@ public class DataFrame {
         String[] lineSplit = line.split(",");
         int elementPerLine = lineSplit.length;
         int i = 0;
-        for(String s : lineSplit) {
+        for (String s : lineSplit) {
             Object inferred = TypeInferer.inferType(s);
 
             if (inferred instanceof String)
-                frame.add(new Serie<>(SupportedTypes.STRING, "column"+i));
+                frame.add(new Serie<>(SupportedTypes.STRING, "column" + i));
             else if (inferred instanceof Integer)
-                frame.add(new Serie<>(SupportedTypes.INTEGER, "column"+i));
+                frame.add(new Serie<>(SupportedTypes.INTEGER, "column" + i));
             else if (inferred instanceof Double)
-                frame.add(new Serie<>(SupportedTypes.DOUBLE, "column"+i));
+                frame.add(new Serie<>(SupportedTypes.DOUBLE, "column" + i));
             i++;
         }
 
         do {
-            i=0;
-            for(String s : lineSplit) {
-                SupportedTypes type = frame.get(i).type;
+            i = 0;
+            for (String s : lineSplit) {
                 frame.get(i).add(TypeInferer.inferType(s));
                 i++;
             }
@@ -66,9 +65,9 @@ public class DataFrame {
             lineSplit = line.split(",");
 
             if (lineSplit.length != elementPerLine)
-                throw new ColumnSizeMissmatch();
+                throw new ColumnSizeMismatch();
 
-        } while(in.hasNext());
+        } while (in.hasNext());
     }
 
 
@@ -79,11 +78,11 @@ public class DataFrame {
      * @param arrays columns to add in DataFrame.
      * @throws UnsupportedTypeException if array elements type is not Integer, Double or String
      */
-    public DataFrame(ArrayList<Object>... arrays) throws UnsupportedTypeException, EmptyArrayException, ColumnSizeMissmatch {
+    public DataFrame(ArrayList<Object>... arrays) throws UnsupportedTypeException, EmptyArrayException, ColumnSizeMismatch {
         frame = new ArrayList<Serie>();
         nbLine = 0;
 
-        for(ArrayList<Object> array : arrays)
+        for (ArrayList<Object> array : arrays)
             addColumn(getNbColumn(), array);
     }
 
@@ -92,10 +91,10 @@ public class DataFrame {
      * Add a given array at given index into DataFrame.
      *
      * @param columnIndex Index where array should be add.
-     * @param array Array of Objects
+     * @param array       Array of Objects
      * @throws UnsupportedTypeException if array elements type is not Integer, Double or String
      */
-    public void addColumn(int columnIndex, ArrayList<Object> array) throws UnsupportedTypeException, EmptyArrayException, ColumnSizeMissmatch {
+    public void addColumn(int columnIndex, ArrayList<Object> array) throws UnsupportedTypeException, EmptyArrayException, ColumnSizeMismatch {
         try {
             frame.remove(columnIndex);
         } catch (IndexOutOfBoundsException e) {
@@ -108,11 +107,11 @@ public class DataFrame {
             Object objType = array.get(0);
             Serie column = null;
             if (objType instanceof String)
-                column = new Serie<>(SupportedTypes.STRING, "column"+columnIndex);
+                column = new Serie<>(SupportedTypes.STRING, "column" + columnIndex);
             else if (objType instanceof Integer)
-                column = new Serie<>(SupportedTypes.INTEGER, "column"+columnIndex);
+                column = new Serie<>(SupportedTypes.INTEGER, "column" + columnIndex);
             else if (objType instanceof Double)
-                column = new Serie<>(SupportedTypes.DOUBLE, "column"+columnIndex);
+                column = new Serie<>(SupportedTypes.DOUBLE, "column" + columnIndex);
             else
                 throw new UnsupportedTypeException();
 
@@ -121,11 +120,10 @@ public class DataFrame {
                 column.add(o);
 
             frame.add(columnIndex, column);
-        }
-        else if (array.size() == 0)
+        } else if (array.size() == 0)
             throw new EmptyArrayException();
-        else  if (nbLine != array.size())
-            throw new ColumnSizeMissmatch();
+        else if (nbLine != array.size())
+            throw new ColumnSizeMismatch();
     }
 
 
@@ -135,9 +133,9 @@ public class DataFrame {
      * @param array Array to add in DataFrame
      * @throws UnsupportedTypeException
      * @throws EmptyArrayException
-     * @throws ColumnSizeMissmatch
+     * @throws ColumnSizeMismatch
      */
-    public void addColumn(ArrayList<Object> array) throws UnsupportedTypeException, EmptyArrayException, ColumnSizeMissmatch {
+    public void addColumn(ArrayList<Object> array) throws UnsupportedTypeException, EmptyArrayException, ColumnSizeMismatch {
         addColumn(getNbColumn(), array);
     }
 
@@ -148,7 +146,7 @@ public class DataFrame {
      * @param column column index to remove
      * @throws IndexOutOfBoundsException
      */
-    public void removeColumn(int column) throws IndexOutOfBoundsException{
+    public void removeColumn(int column) throws IndexOutOfBoundsException {
         frame.remove(column);
         if (frame.isEmpty())
             nbLine = 0;
@@ -157,6 +155,7 @@ public class DataFrame {
 
     /**
      * Create a new DataFrame with given columns index from this.
+     *
      * @param columnNames Array of columns index will be copy into new DataFrame
      * @return New DataFrame created
      * @throws IndexOutOfBoundsException
@@ -168,7 +167,7 @@ public class DataFrame {
         }
 
         newFrame.nbLine = this.nbLine;
-        for(int i=0; i<columnNames.size(); i++) {
+        for (int i = 0; i < columnNames.size(); i++) {
             try {
                 newFrame.frame.add(this.findColumnByName(columnNames.get(i)));
             } catch (ColumnNotFoundException e) {
@@ -180,7 +179,6 @@ public class DataFrame {
 
 
     /**
-     *
      * @param lineIndexes Array of lines index will be copy into new DataFrame
      * @return
      * @throws IndexOutOfBoundsException
@@ -188,19 +186,19 @@ public class DataFrame {
     public DataFrame DataFrameFromLines(ArrayList<Integer> lineIndexes) throws IndexOutOfBoundsException {
         DataFrame newFrame = new DataFrame();
         if (lineIndexes.size() == 0) {
-            return  newFrame;
+            return newFrame;
         }
 
         //First, create all columns
-        for(int i = 0; i<this.getNbColumn(); i++) {
+        for (int i = 0; i < this.getNbColumn(); i++) {
             Serie column = new Serie<>(this.getColumn(i).type);
             newFrame.frame.add(column);
         }
 
         //Fill column with asked lines
-        for (int i=0; i<lineIndexes.size(); i++) {
+        for (int i = 0; i < lineIndexes.size(); i++) {
             newFrame.nbLine++;
-            for (int j=0; j< newFrame.getNbColumn(); j++) {
+            for (int j = 0; j < newFrame.getNbColumn(); j++) {
                 Object OldFrameValue = null;
                 try {
                     OldFrameValue = this.frame.get(j).get(lineIndexes.get(i));
@@ -256,7 +254,7 @@ public class DataFrame {
      * Return a String it contains DataFrame line from given line number to given line number.
      *
      * @param begin First line to read
-     * @param end Last line, will not be read
+     * @param end   Last line, will not be read
      * @return String contains read lines, null if begin > end
      */
     public String print(int begin, int end) {
@@ -266,23 +264,17 @@ public class DataFrame {
         if (begin >= end)
             return null;
 
-        int nbDigit = end>=1 ? (int) (Math.log10(end)) : 1;
+        int nbDigit = end >= 1 ? (int) (Math.log10(end)) : 1;
         String res = "";
 
-        //Print N° + column names, but should be aligned
-        /*res += "N°\t";
-        for (int j=0; j<getNbColumn(); j++)
-            res += frame.get(j).getColumnName()+"\t";
-        res+="\n";*/
-
-        for (int i=begin; i<end; i++) {
+        for (int i = begin; i < end; i++) {
             res += i;
-            int nbSpaces = nbDigit -  (i>=1 ? (int) (Math.log10(i) + 1) : 1)+1;
-            nbSpaces = nbSpaces==0 ? 1 : nbSpaces;
+            int nbSpaces = nbDigit - (i >= 1 ? (int) (Math.log10(i) + 1) : 1) + 1;
+            nbSpaces = nbSpaces == 0 ? 1 : nbSpaces;
 
-            res += String.format("%1$"+nbSpaces+"s", "");
+            res += String.format("%1$" + nbSpaces + "s", "");
 
-            for (int j=0; j<getNbColumn(); j++) {
+            for (int j = 0; j < getNbColumn(); j++) {
                 res += frame.get(j).get(i).toString() + "\t";
             }
             res += "\n";
@@ -292,13 +284,14 @@ public class DataFrame {
 
 
     /**
-     * Search the serie with maching name in all DataFrame
+     * Search the serie with matching name in all DataFrame
+     *
      * @param name Name of serie to search
      * @return Matching Serie if found, null otherwise
      * @throws ColumnNotFoundException
      */
     public Serie findColumnByName(String name) throws ColumnNotFoundException {
-        for(Serie s : frame) {
+        for (Serie s : frame) {
             if (s.getColumnName().equals(name.toLowerCase()))
                 return s;
         }
@@ -308,28 +301,31 @@ public class DataFrame {
 
     /**
      * Get the number of columns
+     *
      * @return number of columns
      */
-    public int getNbColumn(){
+    public int getNbColumn() {
         return frame.size();
     }
 
 
     /**
      * Get the number of lines
+     *
      * @return number of lines
      */
-    public int getNbLine(){
+    public int getNbLine() {
         return nbLine;
     }
 
 
     /**
      * Get a specific column from is index.
+     *
      * @param column column index
      * @return matching serie
      */
-    public Serie getColumn(int column){
+    public Serie getColumn(int column) {
         return frame.get(column);
     }
 
