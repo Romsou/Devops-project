@@ -106,6 +106,16 @@ public class Serie<T> implements Serial<T> {
         }
     }
 
+    public double mean() throws UnsupportedTypeException, EmptySerieException {
+        if(type == SupportedTypes.STRING)
+            throw new UnsupportedTypeException();
+
+        if(size() == 0)
+            throw new EmptySerieException();
+
+        double sum = (double) this.sum();
+        return sum / size();
+    }
 
     private Object maxDouble() throws EmptySerieException {
         if (elements.size() == 0)
