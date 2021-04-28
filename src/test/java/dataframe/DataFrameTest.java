@@ -272,6 +272,30 @@ class DataFrameTest {
     }
 
     @Test
+    void selectFromMinValue() throws ColumnSizeMismatch, EmptyArrayException, UnsupportedTypeException, ColumnNotFoundException {
+        DataFrame frame = new DataFrame(stringSerie, integerSerie, doubleSerie);
+
+        DataFrame newFrame = frame.DataFrameFromMinValue("column0", 0);
+        assertNull(newFrame);
+
+        newFrame = frame.DataFrameFromMinValue("column1", 0);
+        assertEquals(10, newFrame.getNbLine());
+        assertEquals(3, newFrame.getNbColumn());
+
+        newFrame = frame.DataFrameFromMinValue("column1", 2);
+        assertEquals(0, newFrame.getNbLine());
+        assertEquals(3, newFrame.getNbColumn());
+
+        newFrame = frame.DataFrameFromMinValue("column2", 1.0);
+        assertEquals(10, newFrame.getNbLine());
+        assertEquals(3, newFrame.getNbColumn());
+
+        newFrame = frame.DataFrameFromMinValue("column2", 1.2);
+        assertEquals(0, newFrame.getNbLine());
+        assertEquals(3, newFrame.getNbColumn());
+    }
+
+    @Test
     void selectFromLineException() throws ColumnSizeMismatch, EmptyArrayException, UnsupportedTypeException {
         DataFrame frame = new DataFrame(stringSerie, integerSerie, doubleSerie);
         ArrayList<Integer> lineIndexes = new ArrayList<>();

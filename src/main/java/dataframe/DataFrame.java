@@ -167,50 +167,98 @@ public class DataFrame {
         }
 
         newFrame.nbLine = this.nbLine;
-        for (int i = 0; i < columnNames.size(); i++) {
+        for (int i = 0; i < columnNames.size(); i++)
             try {
                 newFrame.frame.add(this.findColumnByName(columnNames.get(i)));
             } catch (ColumnNotFoundException e) {
                 throw e;
             }
-        }
         return newFrame;
     }
 
 
     /**
      * @param lineIndexes Array of lines index will be copy into new DataFrame
-     * @return
+     * @return New DataFrame created
      * @throws IndexOutOfBoundsException
      */
     public DataFrame DataFrameFromLines(ArrayList<Integer> lineIndexes) throws IndexOutOfBoundsException {
         DataFrame newFrame = new DataFrame();
-        if (lineIndexes.size() == 0) {
+        if (lineIndexes.size() == 0)
             return newFrame;
-        }
 
         //First, create all columns
-        for (int i = 0; i < this.getNbColumn(); i++) {
-            Serie column = new Serie<>(this.getColumn(i).type);
-            newFrame.frame.add(column);
-        }
+        for (int i = 0; i < this.getNbColumn(); i++)
+            newFrame.frame.add(new Serie<>(this.getColumn(i).type));
 
         //Fill column with asked lines
         for (int i = 0; i < lineIndexes.size(); i++) {
             newFrame.nbLine++;
-            for (int j = 0; j < newFrame.getNbColumn(); j++) {
-                Object OldFrameValue = null;
+            for (int j = 0; j < newFrame.getNbColumn(); j++)
                 try {
-                    OldFrameValue = this.frame.get(j).get(lineIndexes.get(i));
+                    Object OldFrameValue = this.frame.get(j).get(lineIndexes.get(i));
+                    newFrame.frame.get(j).add(OldFrameValue);
                 } catch (IndexOutOfBoundsException e) {
                     throw e;
                 }
-                newFrame.frame.get(j).add(OldFrameValue);
+        }
+        return newFrame;
+    }
+
+    /**
+     * Create a new DataFrame by selecting each line which contains in a specific column, a minimum given double value.
+     *
+     * @param columnName Column name to check
+     * @param minValue Minimum value
+     * @return New DataFrame created, null if column type is not double
+     * @throws IndexOutOfBoundsException
+     * @throws ColumnNotFoundException
+     */
+    public DataFrame DataFrameFromMinValue(String columnName, double minValue) throws ColumnNotFoundException {
+        DataFrame newFrame = new DataFrame();
+        Serie serie = findColumnByName(columnName);
+
+        if (!serie.getType().equals(SupportedTypes.DOUBLE) && !serie.getType().equals(SupportedTypes.INTEGER))
+            return null;
+
+        //First, create all columns
+        for (int i = 0; i < this.getNbColumn(); i++)
+            newFrame.frame.add(new Serie<>(this.getColumn(i).type));
+
+        //Fill column with asked lines
+        for (int i = 0; i < this.getNbLine(); i++) {
+            boolean addLine = false;
+            if (serie.getType().equals(SupportedTypes.DOUBLE)) {
+                if ((Double) serie.get(i) >= minValue)
+                    addLine = true;
+            } else if (serie.getType().equals(SupportedTypes.INTEGER)) {
+                if (Double.valueOf((Integer)serie.get(i)) >= minValue)
+                    addLine = true;
+            }
+            if (addLine) {
+                newFrame.nbLine++;
+                for (int j = 0; j < newFrame.getNbColumn(); j++) {
+                    Object OldFrameValue = null;
+                    OldFrameValue = this.frame.get(j).get(i);
+                    newFrame.frame.get(j).add(OldFrameValue);
+                }
             }
         }
         return newFrame;
     }
 
+    /**
+     * Create a new DataFrame by selecting each line which contains in a specific column, a minimum given int value.
+     *
+     * @param columnName Column name to check
+     * @param minValue Minimum value
+     * @return New DataFrame created, null if column type is not int
+     * @throws IndexOutOfBoundsException
+     * @throws ColumnNotFoundException
+     */
+    public DataFrame DataFrameFromMinValue(String columnName, int minValue) throws IndexOutOfBoundsException, ColumnNotFoundException {
+        return DataFrameFromMinValue(columnName, Double.valueOf(minValue));
+    }
 
     /**
      * Computes column elements sum. Allow only if column contains Integer or Double
@@ -274,9 +322,9 @@ public class DataFrame {
 
             res += String.format("%1$" + nbSpaces + "s", "");
 
-            for (int j = 0; j < getNbColumn(); j++) {
+            for (int j = 0; j < getNbColumn(); j++)
                 res += frame.get(j).get(i).toString() + "\t";
-            }
+
             res += "\n";
         }
         return res;
@@ -291,10 +339,9 @@ public class DataFrame {
      * @throws ColumnNotFoundException
      */
     public Serie findColumnByName(String name) throws ColumnNotFoundException {
-        for (Serie s : frame) {
+        for (Serie s : frame)
             if (s.getColumnName().equals(name.toLowerCase()))
                 return s;
-        }
         throw new ColumnNotFoundException();
     }
 
