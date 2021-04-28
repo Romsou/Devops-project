@@ -5,7 +5,19 @@
 
 ## Features
 
-Coming
+Our library offers several features, among which:
+
+- Implementation of Series and Dataframe akin to pandas' ones.
+
+- Method to compute the sum of a column.
+
+- Method to compute the minimal and maximal numbers of a column for numeric types.
+
+- Method to compute the mean of a column for numeric types.
+
+- Method to compute print the content of a Serie and of a DataFrame.
+
+- Method to select desired lines or columns.
 
 ## Tools chosen
 
@@ -33,7 +45,19 @@ We chose the following nomenclature for the project:
 - For the test branches: **\<feature name\>**-test
 
 For more security, we define the **dev** branch as the default branch for pull requests, and we define rules to protect branches by forcing the review of code before each merge into the **dev** or the **master** branch.
+Moreover we spontaneously create special branches, such as **cleaning** when performing
+singular actions such as cleaning the project, or making a very specific fix.
+
+We also added a pull request template to smooth workflow and accelerate the integration.
+
+We finally decided to authorize merging only if a pull request or a push passes all unit
+tests to avoid regressions, only making exceptions for test modification, fix,
+and hotfix or if a feature is required rapidly and no one can review the files for now.
+However, such a merge still needs to pass all tests. This choice was made to add flexibility
+to the workflow considering the limited time we had to work with.
 
 ## Feedback
 
-Coming
+The only real setback we had during the project was the same than for any end-year project at UGA: Too many project
+to give back at a time, right before the exams. Being able to complete the assigment, 
+a few days after the exams or being able to start them sooner would be highly appreciated.
