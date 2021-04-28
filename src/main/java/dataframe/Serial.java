@@ -79,7 +79,7 @@ public interface Serial<T> {
     T sum();
 
     /**
-     * Set column name.
+     * Sets column name.
      */
     void setColumnName(String name);
 
