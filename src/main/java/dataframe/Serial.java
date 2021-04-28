@@ -72,9 +72,9 @@ public interface Serial<T> {
     /**
      * Computes the sum of all the elements contained within this serie.
      * <p>
-     * If this serie contains no element, it returns 0.0. Else
+     * If this serie contains no element, it returns 0.0.
      *
-     * @return
+     * @return The sum of all the numeric elements of this serie.
      */
     T sum();
 
