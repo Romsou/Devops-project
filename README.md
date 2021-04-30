@@ -9,6 +9,26 @@ find it here:
 
 - https://romsou.github.io/Devops-project/
 
+## Usage
+
+We created a docker file and used maven and intelliJ to build the project. The following 
+set of commands will help you to compile and test the project, and create the docker
+image:
+
+```
+# compile
+mvn compile
+
+# test
+mvn test
+
+# create docker image
+sudo docker build -t my-maven .
+
+# Run the image
+sudo docker run -it --rm my-maven
+```
+
 ## Features
 
 Our library offers several features, among which:
